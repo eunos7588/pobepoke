@@ -1,0 +1,1617 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぽこポケ 生息地＆レシピ 完全DB</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f1e8;--surf:#fff;--border:#ddd5c0;
+  --moss:#4d7a3e;--leaf:#7db86a;--leaf-lt:#d8f0c8;
+  --sky:#5a9fbe;--sky-lt:#caeaf5;
+  --sun:#d4a520;--sun-lt:#fdf4c5;
+  --coral:#c95a3a;--coral-lt:#fde0d5;
+  --lav:#8870b0;--lav-lt:#ede6fa;
+  --earth:#7a5c30;--dim:#8a7055;--text:#2a1a08;
+  --sh:0 2px 12px rgba(77,122,62,.10);
+  --r:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'M PLUS Rounded 1c',sans-serif;min-height:100vh;}
+
+/* ─── HEADER ─── */
+header{background:var(--moss);padding:0 16px;position:sticky;top:0;z-index:300;box-shadow:0 2px 10px rgba(0,0,0,.2);}
+.hdr{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:10px 0;flex-wrap:wrap;}
+.hdr-logo{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:16px;color:#fff;display:flex;align-items:center;gap:7px;white-space:nowrap;}
+.hdr-logo .nb{background:var(--sun);color:var(--earth);font-size:9px;font-weight:900;padding:2px 7px;border-radius:8px;}
+
+/* ─── MAIN TABS ─── */
+.tabs{max-width:1160px;margin:0 auto;display:flex;padding:0 16px;border-bottom:3px solid var(--border);}
+.tab{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;padding:12px 24px;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:4px solid transparent;margin-bottom:-3px;transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
+.tab:hover{color:var(--moss);}
+.tab.on{color:var(--moss);border-bottom-color:var(--moss);background:rgba(77,122,62,.06);}
+
+/* ─── STORY BANNER ─── */
+.story-banner{background:linear-gradient(90deg,#3a6030,#5a9a48,#3a6030);padding:8px 16px;text-align:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:.5px;cursor:pointer;transition:opacity .15s;}
+.story-banner:hover{opacity:.88;}
+
+/* ─── WRAP ─── */
+.wrap{max-width:1160px;margin:0 auto;padding:20px 16px 60px;}
+
+/* ─── FILTER ─── */
+.fbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center;}
+.sbox{flex:1;min-width:180px;position:relative;}
+.sbox input{width:100%;padding:10px 36px 10px 14px;font-family:'M PLUS Rounded 1c',sans-serif;font-size:14px;font-weight:700;background:var(--surf);border:2px solid var(--border);border-radius:9px;outline:none;color:var(--text);transition:border .15s;}
+.sbox input:focus{border-color:var(--leaf);}
+.sbox input::placeholder{color:#b09878;font-weight:400;}
+.sbox .si{position:absolute;right:10px;top:50%;transform:translateY(-50%);pointer-events:none;font-size:15px;}
+.chips{display:flex;gap:5px;flex-wrap:wrap;}
+.chip{font-size:11px;font-weight:900;padding:6px 12px;border-radius:18px;border:2px solid var(--border);background:var(--surf);color:var(--dim);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.chip:hover{border-color:var(--moss);color:var(--moss);}
+.chip.on{background:var(--moss);color:#fff;border-color:var(--moss);}
+.cnt{font-size:12px;color:var(--dim);font-weight:700;margin-bottom:12px;}
+.cnt b{color:var(--moss);font-size:15px;}
+
+/* ─── TIP BOX ─── */
+.tip{background:var(--leaf-lt);border:2px solid var(--leaf);border-radius:var(--r);padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--moss);line-height:1.8;}
+.tip strong{font-weight:900;}
+
+/* ─── STORY SPOTLIGHT ─── */
+.story-section{display:none;margin-bottom:20px;}
+.story-section.show{display:block;}
+.spot-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.spot-card{background:linear-gradient(135deg,#fff8e8,#fff);border:2px solid var(--sun);border-radius:var(--r);padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
+.spot-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--sun),var(--coral));}
+.spot-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(212,165,32,.2);}
+.spot-card .sc-icon{font-size:36px;margin-bottom:8px;display:block;}
+.spot-card .sc-name{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;color:var(--earth);margin-bottom:4px;}
+.spot-card .sc-role{font-size:11px;font-weight:900;letter-spacing:1px;color:var(--coral);margin-bottom:6px;}
+.spot-card .sc-desc{font-size:12px;color:var(--dim);line-height:1.7;}
+.spot-card .sc-tag{display:inline-block;margin-top:6px;font-size:10px;font-weight:900;padding:2px 8px;border-radius:7px;background:var(--coral-lt);color:var(--coral);}
+.spot-card .sc-recipe{margin-top:8px;font-size:11px;color:var(--moss);background:var(--leaf-lt);padding:5px 9px;border-radius:6px;font-weight:700;}
+
+/* ─── HABITAT GRID ─── */
+.hab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px;}
+.hc{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:all .2s;cursor:pointer;}
+.hc:hover{border-color:var(--leaf);transform:translateY(-2px);box-shadow:0 8px 20px rgba(77,122,62,.15);}
+.hc.hid{display:none;}
+.hc-head{display:flex;align-items:center;gap:10px;padding:12px 14px 8px;}
+.hc-ico{width:46px;height:46px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ico-g{background:#dff5c8;} .ico-w{background:#c8eaf5;} .ico-r{background:#f0e8d8;}
+.ico-s{background:#fdf5c0;} .ico-l{background:#f0e8fa;} .ico-i{background:#e0f0ff;}
+.ico-e{background:#f5ece0;} .ico-n{background:#f0f0e8;}
+.hc-meta{flex:1;min-width:0;}
+.hc-name{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;}
+.hc-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.ht{font-size:9px;font-weight:900;padding:2px 6px;border-radius:6px;}
+.ht-g{background:#d8f0c8;color:var(--moss);} .ht-w{background:#c8eaf5;color:var(--sky);}
+.ht-r{background:#f0e8d8;color:var(--earth);} .ht-s{background:#fdf5c0;color:#8a6010;}
+.ht-l{background:#f0e8fa;color:var(--lav);} .ht-n{background:#f0f0e8;color:var(--dim);}
+.ht-i{background:#e0f0ff;color:#3060a0;} .ht-e{background:#f5ece0;color:var(--earth);}
+.ht-rare{background:#ffe0e0;color:#c03030;} .ht-story{background:#fff0c0;color:#806000;}
+.hc-body{padding:0 14px 12px;}
+.mat-row{display:flex;align-items:baseline;gap:6px;font-size:12px;color:var(--dim);margin-bottom:3px;}
+.mat-row::before{content:'▸';color:var(--leaf);flex-shrink:0;font-size:10px;}
+.poke-row{display:flex;gap:4px;flex-wrap:wrap;border-top:1px dashed var(--border);padding-top:8px;margin-top:6px;}
+.ptag{font-size:11px;font-weight:700;padding:3px 8px;border-radius:7px;background:#f0ede8;color:var(--earth);border:1px solid var(--border);}
+.ptag.r1{background:#fff0d8;border-color:#e8c888;color:#8b5e00;}
+.ptag.r2{background:#ffe8d8;border-color:#e8a870;color:#8b3000;}
+.ptag.r3{background:#ffe0e0;border-color:#e09090;color:#8b0000;}
+.ptag.story{background:#fff0c0;border-color:#d0b040;color:#806000;font-weight:900;}
+
+/* ─── RECIPE SUBTABS ─── */
+.rsubs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);overflow-x:auto;}
+.rsub{font-weight:900;font-size:12px;padding:9px 18px;border:none;background:none;cursor:pointer;color:var(--dim);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.rsub:hover{color:var(--earth);}
+.rsub.on{color:var(--earth);border-bottom-color:var(--sun);}
+
+/* ─── RECIPE TABLE ─── */
+.rec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;}
+.rc{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);padding:16px;box-shadow:var(--sh);transition:all .2s;cursor:pointer;}
+.rc:hover{border-color:var(--sun);transform:translateY(-2px);box-shadow:0 8px 20px rgba(212,165,32,.15);}
+.rc.hid{display:none;}
+.rc.story-pick{border-color:var(--coral);background:linear-gradient(135deg,#fff8f4,#fff);}
+.rc.story-pick::before{content:'★ストーリー重要';font-size:9px;font-weight:900;color:var(--coral);letter-spacing:1px;display:block;margin-bottom:6px;}
+.rc-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.rc-ico{width:44px;height:44px;flex-shrink:0;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:22px;}
+.ico-sal{background:#d8f5c8;} .ico-ham{background:#fde0d0;} .ico-sou{background:#c8e8f8;} .ico-bre{background:#fdf0c0;}
+.rc-info{flex:1;}
+.rc-name{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;color:var(--text);margin-bottom:3px;}
+.rc-cat{font-size:9px;font-weight:900;padding:2px 8px;border-radius:6px;display:inline-block;letter-spacing:.5px;}
+.cat-s{background:var(--leaf-lt);color:var(--moss);}
+.cat-h{background:var(--coral-lt);color:var(--coral);}
+.cat-u{background:var(--sky-lt);color:var(--sky);}
+.cat-p{background:var(--sun-lt);color:#8b6010;}
+.rc-mats{margin-bottom:10px;}
+.rc-mats-title{font-size:10px;font-weight:900;color:var(--dim);letter-spacing:.5px;margin-bottom:5px;}
+.mpills{display:flex;gap:4px;flex-wrap:wrap;}
+.mp{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:#f5f0e8;color:var(--earth);border:1.5px solid var(--border);}
+.mp.main{background:var(--sun-lt);color:#7a5010;border-color:#d4b050;font-weight:900;}
+.mp.poke{background:var(--lav-lt);color:var(--lav);border-color:#c0a8e8;}
+.rc-eff{font-size:12px;color:var(--dim);background:#f7f3eb;border-radius:7px;padding:8px 10px;line-height:1.7;border-left:3px solid var(--leaf);}
+.rc-eff strong{color:var(--moss);}
+.rc-offer{font-size:11px;color:var(--coral);margin-top:4px;font-weight:700;}
+
+/* ─── PANE SWITCH ─── */
+.pane{display:none;}
+.pane.on{display:block;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:520px){
+  .tab{padding:10px 14px;font-size:12px;}
+  .hab-grid,.rec-grid,.craft-grid{grid-template-columns:1fr;}
+  .spot-grid{grid-template-columns:1fr 1fr;}
+}
+
+/* ─── CRAFT STYLES ─── */
+.craft-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:10px;}
+
+/* 入手方法ごとの帯カラー */
+.how-story {--hc:var(--coral);--hcl:var(--coral-lt);}
+.how-shop  {--hc:var(--sky);  --hcl:var(--sky-lt);}
+.how-field {--hc:var(--moss); --hcl:var(--leaf-lt);}
+.how-zukan {--hc:var(--sun);  --hcl:var(--sun-lt);}
+.how-yume  {--hc:var(--lav);  --hcl:var(--lav-lt);}
+.how-trade {--hc:#a06040;     --hcl:#f5e8d8;}
+
+.cc{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);
+    box-shadow:var(--sh);transition:all .2s;cursor:pointer;overflow:hidden;}
+.cc:hover{border-color:var(--hc,var(--leaf));transform:translateY(-2px);
+          box-shadow:0 8px 20px rgba(0,0,0,.12);}
+.cc.hid{display:none;}
+
+.cc-stripe{height:5px;background:var(--hc,var(--leaf));}
+.cc-body{padding:14px 16px;}
+.cc-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.cc-icon{width:44px;height:44px;flex-shrink:0;border-radius:9px;
+         background:var(--hcl,var(--leaf-lt));display:flex;align-items:center;justify-content:center;font-size:22px;}
+.cc-name{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;color:var(--text);margin-bottom:3px;}
+.cc-cat-row{display:flex;gap:4px;flex-wrap:wrap;}
+.cc-cat{font-size:9px;font-weight:900;padding:2px 7px;border-radius:5px;background:var(--hcl,var(--leaf-lt));color:var(--hc,var(--moss));letter-spacing:.5px;}
+.cc-how{display:inline-flex;align-items:center;gap:5px;
+        font-size:11px;font-weight:900;padding:4px 10px;border-radius:8px;
+        background:var(--hcl,var(--leaf-lt));color:var(--hc,var(--moss));
+        margin-bottom:8px;}
+.cc-mats{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.cc-mat{font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;
+        background:#f5f0e8;color:var(--earth);border:1.5px solid var(--border);}
+.cc-mat.key{background:var(--sun-lt);color:#7a5010;border-color:#d4b050;font-weight:900;}
+.cc-cond{font-size:12px;color:var(--dim);background:#f7f3eb;border-radius:7px;
+         padding:7px 10px;line-height:1.7;border-left:3px solid var(--hc,var(--leaf));}
+.cc-cond strong{color:var(--text);}
+
+/* craft subtabs */
+.csubs{display:flex;gap:0;margin-bottom:16px;border-bottom:2px solid var(--border);overflow-x:auto;}
+.csub{font-weight:900;font-size:12px;padding:9px 16px;border:none;background:none;cursor:pointer;
+      color:var(--dim);border-bottom:3px solid transparent;margin-bottom:-2px;
+      transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.csub:hover{color:var(--lav);}
+.csub.on{color:var(--lav);border-bottom-color:var(--lav);}
+
+/* how-legend */
+.how-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.hl-item{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:900;
+         padding:4px 10px;border-radius:8px;border:1.5px solid;}
+.hl-story{background:var(--coral-lt);color:var(--coral);border-color:var(--coral);}
+.hl-shop {background:var(--sky-lt);color:var(--sky);border-color:var(--sky);}
+.hl-field{background:var(--leaf-lt);color:var(--moss);border-color:var(--leaf);}
+.hl-zukan{background:var(--sun-lt);color:var(--sun);border-color:var(--sun);}
+.hl-yume {background:var(--lav-lt);color:var(--lav);border-color:var(--lav);}
+.hl-trade{background:#f5e8d8;color:#a06040;border-color:#c09060;}
+
+/* ─── TIPS STYLES ─── */
+.tips-cats{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;}
+.tcat{font-size:11px;font-weight:900;padding:7px 14px;border-radius:18px;
+      border:2px solid var(--border);background:var(--surf);color:var(--dim);
+      cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:4px;}
+.tcat:hover{border-color:var(--coral);color:var(--coral);}
+.tcat.on{color:white;border-color:transparent;}
+.tcat.on[data-t="time"]{background:#e05a30;}
+.tcat.on[data-t="move"]{background:var(--sky);}
+.tcat.on[data-t="mat"]{background:var(--moss);}
+.tcat.on[data-t="poke"]{background:var(--sun);color:var(--earth);}
+.tcat.on[data-t="build"]{background:var(--lav);}
+.tcat.on[data-t="coin"]{background:#c89030;color:white;}
+.tcat.on[data-t="misc"]{background:var(--dim);}
+.tcat.on[data-t="all"]{background:var(--coral);}
+
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px;}
+
+.tip-card{background:var(--surf);border:2px solid var(--border);border-radius:var(--r);
+          overflow:hidden;box-shadow:var(--sh);transition:all .2s;}
+.tip-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.12);}
+.tip-card.hid{display:none;}
+
+.tip-head{padding:14px 16px 0;display:flex;align-items:flex-start;gap:10px;}
+.tip-emoji{font-size:28px;flex-shrink:0;line-height:1;}
+.tip-meta{flex:1;}
+.tip-title{font-family:'Zen Maru Gothic',sans-serif;font-weight:900;font-size:14px;
+           color:var(--text);margin-bottom:5px;line-height:1.4;}
+.tip-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.ttag{font-size:9px;font-weight:900;padding:2px 7px;border-radius:5px;letter-spacing:.5px;}
+.ttag-time  {background:#ffe0d0;color:#c03000;}
+.ttag-move  {background:var(--sky-lt);color:var(--sky);}
+.ttag-mat   {background:var(--leaf-lt);color:var(--moss);}
+.ttag-poke  {background:var(--sun-lt);color:#8b6010;}
+.ttag-build {background:var(--lav-lt);color:var(--lav);}
+.ttag-coin  {background:#fdf0c0;color:#8b6000;}
+.ttag-misc  {background:#f0ede8;color:var(--dim);}
+.ttag-warn  {background:#ffe0e0;color:#c03030;}
+.ttag-new   {background:var(--coral-lt);color:var(--coral);}
+
+.tip-body{padding:10px 16px 14px;}
+.tip-desc{font-size:13px;color:var(--dim);line-height:1.85;margin-bottom:8px;}
+.tip-how{font-size:12px;background:#f7f3eb;border-radius:7px;padding:8px 10px;
+          line-height:1.7;border-left:3px solid var(--leaf-lt);}
+.tip-how.warn{border-left-color:var(--coral);}
+.tip-how strong{color:var(--text);}
+.tip-warn{font-size:11px;color:var(--coral);font-weight:700;margin-top:6px;
+          display:flex;align-items:flex-start;gap:4px;}
+
+.tips-search-wrap{margin-bottom:16px;}
+
+/* ══════════════════════════════
+   📱 スマホ最適化
+══════════════════════════════ */
+
+/* タッチターゲット最小44px確保 */
+button,input,.chip,.tcat,.tab,.csub,.rsub{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+
+/* スクロールバー非表示（横スクロール領域） */
+.tabs,.rsubs,.csubs,.tips-cats,.chips{
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.tabs::-webkit-scrollbar,
+.rsubs::-webkit-scrollbar,
+.csubs::-webkit-scrollbar,
+.tips-cats::-webkit-scrollbar,
+.chips::-webkit-scrollbar{display:none;}
+
+/* タブをスクロール可能に */
+.tabs{overflow-x:auto;padding:0 12px;}
+
+/* ── 小〜中画面（〜767px） ── */
+@media(max-width:767px){
+
+  /* ヘッダー */
+  .hdr{padding:8px 0;}
+  .hdr-logo{font-size:14px;}
+
+  /* バナー */
+  .story-banner{font-size:11px;padding:7px 12px;}
+
+  /* タブ文字小さく */
+  .tab{font-size:12px;padding:10px 14px;gap:3px;}
+
+  /* コンテンツ余白 */
+  .wrap{padding:14px 12px 100px;}
+
+  /* tip説明 */
+  .tip{font-size:12px;padding:10px 12px;}
+
+  /* グリッドを1カラム */
+  .hab-grid,
+  .rec-grid,
+  .craft-grid,
+  .tips-grid,
+  .spot-grid{
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+
+  /* カード内余白を詰める */
+  .hc-body{padding:0 12px 10px;}
+  .hc-head{padding:10px 12px 6px;}
+  .rc{padding:14px 12px;}
+  .cc-body{padding:12px;}
+  .tip-head{padding:12px 12px 0;}
+  .tip-body{padding:8px 12px 12px;}
+
+  /* フィルターバー縦並び */
+  .fbar{flex-direction:column;align-items:stretch;}
+  .sbox{min-width:0;}
+  .sbox input{font-size:16px;} /* iOS自動ズーム防止 */
+
+  /* チップを横スクロール1行に */
+  .chips,.tips-cats,.how-legend{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    padding-bottom:4px;
+  }
+  .chip,.tcat,.hl-item{flex-shrink:0;}
+
+  /* カウント表示 */
+  .cnt{font-size:11px;}
+
+  /* ストーリーピックアップカード */
+  .spot-card .sc-icon{font-size:28px;}
+  .spot-card .sc-name{font-size:13px;}
+  .spot-card .sc-desc{font-size:11px;}
+
+  /* 裏技カード */
+  .tip-emoji{font-size:24px;}
+  .tip-title{font-size:13px;}
+  .tip-desc{font-size:12px;}
+  .tip-how{font-size:11px;}
+
+  /* ポケモンタグ */
+  .ptag{font-size:11px;padding:3px 7px;}
+
+  /* 素材ピル */
+  .mp,.mat-pill,.mat-row{font-size:11px;}
+
+  /* レシピカード */
+  .rc-name{font-size:13px;}
+  .rc-ico{width:40px;height:40px;font-size:20px;}
+
+  /* クラフトカード */
+  .cc-name{font-size:13px;}
+  .cc-icon{width:40px;height:40px;font-size:20px;}
+  .cc-cond{font-size:11px;}
+
+  /* 生息地カード */
+  .hc-name{font-size:13px;}
+  .hc-ico{width:40px;height:40px;font-size:20px;}
+  .mat-row{font-size:11px;}
+  .ht{font-size:8px;}
+}
+
+/* ── 極小画面（〜374px） ── */
+@media(max-width:374px){
+  .hdr-logo{font-size:12px;}
+  .tab{font-size:11px;padding:9px 10px;}
+  .wrap{padding:10px 10px 100px;}
+}
+
+/* ── ボトムナビ（スマホ専用タブバー） ── */
+@media(max-width:767px){
+
+  /* 上部タブを隠す */
+  .tabs{display:none;}
+
+  /* ボトムナビ */
+  .bottom-nav{
+    display:flex;
+    position:fixed;
+    bottom:0;left:0;right:0;
+    z-index:500;
+    background:var(--surf);
+    border-top:2px solid var(--border);
+    box-shadow:0 -2px 16px rgba(0,0,0,.12);
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  .bn-btn{
+    flex:1;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:3px;padding:8px 4px;
+    border:none;background:none;
+    font-family:'M PLUS Rounded 1c',sans-serif;
+    font-size:9px;font-weight:900;
+    color:var(--dim);cursor:pointer;
+    transition:all .15s;
+    -webkit-tap-highlight-color:transparent;
+    min-height:56px;
+  }
+  .bn-btn .bn-icon{font-size:22px;line-height:1;}
+  .bn-btn.on{color:var(--moss);}
+  .bn-btn.on .bn-icon{
+    transform:scale(1.15);
+    filter:drop-shadow(0 1px 3px rgba(77,122,62,.3));
+  }
+}
+
+/* PCではボトムナビ非表示 */
+@media(min-width:768px){
+  .bottom-nav{display:none;}
+  /* PCではグリッド最適化 */
+  .hab-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+  .rec-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+  .craft-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));}
+  .tips-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr));}
+  .spot-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr">
+    <div class="hdr-logo">🌿 ぽこポケ 生息地＆レシピ 完全DB <span class="nb">非公式</span></div>
+  </div>
+</header>
+
+<div class="story-banner" id="story-btn" onclick="toggleStory()">
+  ⭐ ストーリー重要ポケモン＆レシピ ピックアップを表示する ▼
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="sw('hab',this)">🏘️ 生息地図鑑</button>
+  <button class="tab" onclick="sw('rec',this)">🍳 料理レシピ</button>
+  <button class="tab" onclick="sw('craft',this)">🔨 クラフトレシピ入手法</button>
+  <button class="tab" onclick="sw('tips',this)">💡 裏技・小技</button>
+</div>
+
+<!-- ══════ 生息地 ══════ -->
+<div class="pane on" id="pane-hab">
+<div class="wrap">
+
+  <!-- ストーリーピックアップ -->
+  <div class="story-section" id="story-hab">
+    <div class="tip">⭐ <strong>ストーリー攻略に重要な生息地とポケモン</strong>　—　これを先に作ると詰まらずに進められます！</div>
+    <div class="spot-grid" id="spot-hab-grid"></div>
+    <div style="margin:16px 0 4px;border-top:2px dashed var(--border);"></div>
+  </div>
+
+  <div class="tip">
+    💡 <strong>生息地の基本：</strong>　生息地図鑑は全<strong>209種</strong>（＋イベント限定）。既存の「すみか」にはポケモンが出ないので<strong>新しく作る</strong>こと。<br>
+    ★＝出やすさ　★★＝やや珍しい　★★★＝レア
+  </div>
+  <div class="fbar">
+    <div class="sbox"><input id="hs" type="text" placeholder="生息地名・素材・ポケモン名で検索..." oninput="fh()"><span class="si">🔍</span></div>
+    <div class="chips" id="hchips">
+      <button class="chip on" data-c="all" onclick="sc(this,'all','h')">すべて</button>
+      <button class="chip" data-c="g"   onclick="sc(this,'g','h')">🌿 草むら</button>
+      <button class="chip" data-c="f"   onclick="sc(this,'f','h')">🌸 花畑</button>
+      <button class="chip" data-c="w"   onclick="sc(this,'w','h')">💧 水辺・海</button>
+      <button class="chip" data-c="r"   onclick="sc(this,'r','h')">🪨 岩・砂</button>
+      <button class="chip" data-c="i"   onclick="sc(this,'i','h')">🧊 雪・氷</button>
+      <button class="chip" data-c="l"   onclick="sc(this,'l','h')">✨ 施設系</button>
+      <button class="chip" data-c="e"   onclick="sc(this,'e','h')">🌙 特殊</button>
+    </div>
+  </div>
+  <div class="cnt" id="hcnt"></div>
+  <div class="hab-grid" id="hab-grid"></div>
+</div>
+</div>
+
+<!-- ══════ 料理レシピ ══════ -->
+<div class="pane" id="pane-rec">
+<div class="wrap">
+
+  <!-- ストーリーピックアップ -->
+  <div class="story-section" id="story-rec">
+    <div class="tip">⭐ <strong>ストーリー攻略に重要な料理レシピ</strong>　—　作っておくと探索効率が格段に上がります！</div>
+    <div class="spot-grid" id="spot-rec-grid"></div>
+    <div style="margin:16px 0 4px;border-top:2px dashed var(--border);"></div>
+  </div>
+
+  <div class="tip">
+    💡 <strong>料理の基本：</strong>　料理は<strong>ゴツゴツやまの街</strong>のストーリーで解放（全<strong>24種</strong>）。調理器具によってメイン素材と料理種類が決まる。<br>
+    <strong>シェフバリス（ヨクバリス）</strong>を近くに置くとまれに作成量2倍に！おすすめは「ジャガイモハンバーグ」と「やくぜんスープ」。
+  </div>
+  <div class="fbar">
+    <div class="sbox"><input id="rs" type="text" placeholder="料理名・素材・効果で検索..." oninput="fr()"><span class="si">🔍</span></div>
+  </div>
+  <div class="rsubs">
+    <button class="rsub on" onclick="srs('all',this)">🍽️ すべて</button>
+    <button class="rsub" onclick="srs('s',this)">🥗 サラダ（まないた）</button>
+    <button class="rsub" onclick="srs('h',this)">🍔 ハンバーグ（フライパン）</button>
+    <button class="rsub" onclick="srs('u',this)">🍲 スープ（なべ）</button>
+    <button class="rsub" onclick="srs('p',this)">🍞 パン（パンがま）</button>
+  </div>
+  <div class="cnt" id="rcnt"></div>
+  <div class="rec-grid" id="rec-grid"></div>
+</div>
+</div>
+
+<!-- ══════ クラフトレシピ ══════ -->
+<div class="pane" id="pane-craft">
+<div class="wrap">
+  <div class="tip">
+    💡 <strong>クラフトレシピについて：</strong>　全<strong>714種</strong>のレシピを入手方法別に整理。ショップは<strong>AM5:00</strong>に日替わりリセット。時間操作でリセット可能。<br>
+    図鑑報酬は<strong>5匹ごと</strong>（100匹以降は10匹ごと）。ネオダウジングマシンのみ図鑑300匹必須。
+  </div>
+  <div class="how-legend">
+    <span class="hl-item hl-story">🎮 ストーリー進行</span>
+    <span class="hl-item hl-shop">🛒 ショップ購入</span>
+    <span class="hl-item hl-field">🗺️ フィールド拾得</span>
+    <span class="hl-item hl-zukan">📖 図鑑登録報酬</span>
+    <span class="hl-item hl-yume">🏝️ ゆめしま</span>
+    <span class="hl-item hl-trade">🔄 取引・その他</span>
+  </div>
+  <div class="fbar">
+    <div class="sbox"><input id="cs" type="text" placeholder="アイテム名・素材・入手条件で検索..." oninput="fc()"><span class="si">🔍</span></div>
+    <div class="chips" id="cchips">
+      <button class="chip on" data-c="all"   onclick="scc(this,'all')">すべて</button>
+      <button class="chip" data-c="story" onclick="scc(this,'story')">🎮 ストーリー</button>
+      <button class="chip" data-c="shop"  onclick="scc(this,'shop')">🛒 ショップ</button>
+      <button class="chip" data-c="field" onclick="scc(this,'field')">🗺️ フィールド</button>
+      <button class="chip" data-c="zukan" onclick="scc(this,'zukan')">📖 図鑑報酬</button>
+      <button class="chip" data-c="yume"  onclick="scc(this,'yume')">🏝️ ゆめしま</button>
+      <button class="chip" data-c="trade" onclick="scc(this,'trade')">🔄 取引・その他</button>
+    </div>
+  </div>
+  <div class="csubs">
+    <button class="csub on" onclick="sccat('all',this)">📦 すべて</button>
+    <button class="csub" onclick="sccat('家具',this)">🪑 家具</button>
+    <button class="csub" onclick="sccat('ざっか',this)">🧸 ざっか</button>
+    <button class="csub" onclick="sccat('おくがい',this)">🌿 おくがい</button>
+    <button class="csub" onclick="sccat('べんり',this)">⚙️ べんり</button>
+    <button class="csub" onclick="sccat('たてもの',this)">🏠 たてもの</button>
+    <button class="csub" onclick="sccat('ブロック',this)">🧱 ブロック</button>
+  </div>
+  <div class="cnt" id="ccnt"></div>
+  <div class="craft-grid" id="craft-grid"></div>
+</div>
+</div>
+
+<!-- ══════ 裏技・小技 ══════ -->
+<div class="pane" id="pane-tips">
+<div class="wrap">
+  <div class="tip">
+    💡 <strong>裏技・小技について：</strong>　コミュニティで発見された効率化テクニックをカテゴリ別にまとめています。<br>
+    ⚠️ 時間操作系は<strong>スタンプカードが消える</strong>デメリットあり。自己責任で活用しましょう。更新停止時点の情報のためアプデで変更される場合があります。
+  </div>
+  <div class="tips-search-wrap">
+    <div class="sbox"><input id="ts" type="text" placeholder="テクニック名・キーワードで検索..." oninput="ft()"><span class="si">🔍</span></div>
+  </div>
+  <div class="tips-cats">
+    <button class="tcat on" data-t="all" onclick="stcat(this,'all')">🔍 すべて</button>
+    <button class="tcat" data-t="time"  onclick="stcat(this,'time')">⏰ 時間操作</button>
+    <button class="tcat" data-t="move"  onclick="stcat(this,'move')">🚀 移動・探索</button>
+    <button class="tcat" data-t="mat"   onclick="stcat(this,'mat')">🪵 素材収集</button>
+    <button class="tcat" data-t="poke"  onclick="stcat(this,'poke')">🐾 ポケモン収集</button>
+    <button class="tcat" data-t="build" onclick="stcat(this,'build')">🏠 建築・レイアウト</button>
+    <button class="tcat" data-t="coin"  onclick="stcat(this,'coin')">💰 金策・コイン</button>
+    <button class="tcat" data-t="misc"  onclick="stcat(this,'misc')">✨ その他</button>
+  </div>
+  <div class="cnt" id="tcnt"></div>
+  <div class="tips-grid" id="tips-grid"></div>
+</div>
+</div>
+
+<script>
+
+// ─ STORY SPOTLIGHT POKEMON ─
+const STORY_POK = [
+  {icon:'🫧', name:'メタモン（主人公）', role:'主人公', desc:'ポケモンからヒントをもらい技を覚える。「このは」「みずでっぽう」を最初に習得しよう。', tag:'プレイアブル', recipe:'サラダ→このは強化、ハンバーグ→いわくだき強化'},
+  {icon:'🌱', name:'フシギダネ', role:'序盤の仲間', desc:'「このは」を教えてくれる最初の仲間。ヒメリの実を渡すと友達になれる。緑の草むら or 緑のベンチに出現。', tag:'技習得必須', recipe:'ヒメリのみ → ヒメリサラダでお供え'},
+  {icon:'💧', name:'ゼニガメ', role:'序盤の仲間', desc:'「みずでっぽう」を教えてくれる。枯れた木の育成に必須。緑の草むら or うるおう草むらに出現。', tag:'技習得必須', recipe:'ヒメリのみ → ヒメリサラダでお供え'},
+  {icon:'🔥', name:'ヒトカゲ', role:'序盤の仲間', desc:'焚き火に火をつけるために連れていく。夜の灯りや料理解放に必要。緑の草むらに出現。', tag:'料理解放の鍵', recipe:'たきびに連れていく→パンがま利用可能に'},
+  {icon:'😴', name:'カビゴン（こけむし）', role:'ストーリー核心', desc:'ドンヨリうみべの街で眠り続けている。料理を供えると恩恵を得られ、からい料理でポケモン出現率UP。', tag:'お供えキャラ', recipe:'やくぜんスープ・クルトンサラダ（辛味）がおすすめ'},
+  {icon:'⚡', name:'ピカチュウ（うすいろ）', role:'ストーリー核心', desc:'ゴツゴツやまの街で登場する特別なピカチュウ。仲間に電気を分け与えてこの姿に。写真撮影チャンス！', tag:'ストーリー専用', recipe:'なし（ストーリー展開のみ）'},
+  {icon:'🎨', name:'ドーブル（ペインター）', role:'施設解放', desc:'ドンヨリうみべの街のストーリーで登場。仲間になると家具や建築物のペイントが可能になる。', tag:'機能解放', recipe:'なし（ストーリーで加入）'},
+  {icon:'🌿', name:'モジャンボ博士', role:'案内役', desc:'ストーリー全体のガイド役。迷ったら話しかけると次にやることを教えてくれる。', tag:'チュートリアル', recipe:'なし'},
+  {icon:'🎈', name:'フワンテ', role:'ゆめしま解放', desc:'「人形」を見せるとゆめしまへ連れて行ってくれる。たきび×3の生息地に出現。', tag:'ゆめしま必須', recipe:'なし（人形アイテムを渡す）'},
+  {icon:'🦊', name:'ヨクバリス（シェフバリス）', role:'料理補助', desc:'「パーティ」が得意。近くに置いておくとまれに料理の作成量が2倍になる。', tag:'料理補助', recipe:'料理中に連れているとボーナス'},
+];
+
+// ─ STORY SPOTLIGHT RECIPES ─
+const STORY_REC = [
+  {icon:'🥗', name:'プレーンサラダ / ヒメリサラダ', role:'序盤の必須料理', desc:'「このは」が強化され草を広範囲に生やせる。序盤の生息地作りに不可欠。ヒメリサラダはフシギダネ・ゼニガメへのお供えにも◎', key:'探索序盤'},
+  {icon:'🍞', name:'プレーンパン / アツアツスープパン', role:'探索範囲拡張', desc:'「いあいぎり」が強化され鉄のような硬いものも壊せるようになる。新エリアへの道が開ける。パンがまはヒトカゲが必要！', key:'探索必須'},
+  {icon:'🍔', name:'ジャガイモハンバーグ ★おすすめ', role:'整地・素材収集', desc:'「いわくだき」がとても強化される。ポケメタルなど硬い素材もすぐ壊せ整地・素材集めが超効率化。キラキラうきしまの街以降で作れる。', key:'攻略中盤'},
+  {icon:'🍲', name:'やくぜんスープ', role:'ポケモン出現促進', desc:'こけカビゴンへのお供えとして効果大。生息地にポケモンがかなり現れやすくなる。はっぱ＋マメ＋おいしいみずで作れる。', key:'図鑑コンプ'},
+  {icon:'🥗', name:'クルトンサラダ', role:'カビゴンお供え', desc:'はっぱ＋パン（自由）で作れる素材が少ない辛味料理。こけカビゴンへのお供えで生息地ポケモン出現率UP。', key:'素材少ない'},
+  {icon:'🍔', name:'いろどりハンバーグ', role:'整地・採掘強化', desc:'ジャガイモ＋サラダ（自由）＋マメで作る上位ハンバーグ。「いわくだき」「ころがる」がより強化され、パサパサこうやの採掘が格段に楽になる。', key:'攻略後半'},
+];
+
+// ─ HABITATS (実データ全209種 代表掲載) ─
+const HABS = [
+  // ── 草むら系 ──
+  {n:'緑の草むら',c:'g',ico:'🌿',ico_c:'ico-g',tags:['草むら','序盤'],
+   mats:['みどりのくさ×4'],
+   poke:[{n:'フシギダネ',r:1,story:true},{n:'ゼニガメ',r:1,story:true},{n:'ヒトカゲ',r:1,story:true},{n:'イシツブテ',r:1},{n:'ナゾノクサ',r:1},{n:'リザードン',r:3}]},
+  {n:'木かげの草むら',c:'g',ico:'🌳',ico_c:'ico-g',tags:['草むら','木'],
+   mats:['みどりのくさ×4','大きな木（なんでも）×1'],
+   poke:[{n:'ストライク',r:1},{n:'ハッサム',r:1},{n:'カイロス',r:2},{n:'マダツボミ',r:1},{n:'ホシガリス',r:1},{n:'ヘラクロス',r:2}]},
+  {n:'岩かげの草むら',c:'g',ico:'🪨',ico_c:'ico-g',tags:['草むら','岩'],
+   mats:['みどりのくさ×4','おおきないし×1'],
+   poke:[{n:'ドッコラー',r:1,story:true},{n:'ドテッコツ',r:2},{n:'ワンリキー',r:1}]},
+  {n:'うるおう草むら',c:'g',ico:'💧',ico_c:'ico-g',tags:['草むら','水'],
+   mats:['みどりのくさ×4','みず×2'],
+   poke:[{n:'ゼニガメ',r:1,story:true},{n:'ウッウ',r:1},{n:'カメール',r:2}]},
+  {n:'波打ちぎわの草むら',c:'g',ico:'🌊',ico_c:'ico-g',tags:['草むら','海'],
+   mats:['みどりのくさ×4','うみのみず×2'],
+   poke:[{n:'ヤドン',r:1},{n:'ヤドラン',r:3}]},
+  {n:'高台の草むら',c:'g',ico:'⛰️',ico_c:'ico-g',tags:['草むら','高所'],
+   mats:['みどりのくさ×4','高いところ×1'],
+   poke:[{n:'ポッポ',r:1},{n:'ピジョン',r:2},{n:'ホーホー',r:1}]},
+  {n:'照らされた草むら',c:'g',ico:'💡',ico_c:'ico-g',tags:['草むら','明かり'],
+   mats:['明かり（なんでも）×1','草（なんでも）×4'],
+   poke:[{n:'コンパン',r:1},{n:'モルフォン',r:2}]},
+  {n:'黄色の草むら',c:'g',ico:'🟡',ico_c:'ico-g',tags:['草むら','黄色'],
+   mats:['きいろのくさ×4'],
+   poke:[{n:'イトマル',r:1},{n:'アリアドス',r:2},{n:'アゴジムシ',r:1}]},
+  {n:'木かげの黄色の草むら',c:'g',ico:'🌲',ico_c:'ico-g',tags:['草むら','黄色','木'],
+   mats:['大きな木（なんでも）×1','きいろのくさ×4'],
+   poke:[{n:'ズバット',r:1},{n:'ゴルバット',r:2},{n:'マクノシタ',r:1},{n:'ハリテヤマ',r:2}]},
+  {n:'高台の黄色の草むら',c:'g',ico:'🏔️',ico_c:'ico-g',tags:['草むら','黄色','高所'],
+   mats:['高いところ×1','きいろのくさ×4'],
+   poke:[{n:'クロバット',r:3},{n:'キャモメ',r:1}]},
+  {n:'うるおう黄色の草むら',c:'g',ico:'🌧️',ico_c:'ico-g',tags:['草むら','黄色','水'],
+   mats:['みず×2','きいろのくさ×4'],
+   poke:[{n:'ルリリ',r:1},{n:'マリル',r:2},{n:'ポッチャマ',r:1},{n:'ポッタイシ',r:2}]},
+  {n:'沼地の草むら',c:'g',ico:'🟤',ico_c:'ico-g',tags:['草むら','黄色','沼'],
+   mats:['きいろのくさ×4','どろみず×2'],
+   poke:[{n:'ウパー',r:1},{n:'ドオー',r:2}]},
+  {n:'草むらの自販機',c:'g',ico:'🟡',ico_c:'ico-g',tags:['草むら','施設'],
+   mats:['きいろのくさ×4','じどうはんばいき×1'],
+   poke:[{n:'メリープ',r:2}]},
+  {n:'赤い草むら',c:'g',ico:'🔴',ico_c:'ico-g',tags:['草むら','赤'],
+   mats:['あかいくさ×4'],
+   poke:[{n:'ヒバニー',r:1},{n:'リオル',r:1},{n:'コロボーシ',r:1},{n:'コロトック',r:2},{n:'エースバーン',r:3}]},
+  {n:'木かげの赤い草むら',c:'g',ico:'🌲',ico_c:'ico-g',tags:['草むら','赤','木'],
+   mats:['あかいくさ×4','大きな木（なんでも）×1'],
+   poke:[{n:'ディグダ',r:1},{n:'ダグトリオ',r:2},{n:'ウソハチ',r:1},{n:'ウソッキー',r:2}]},
+  {n:'三角木かげに岩と草むら',c:'g',ico:'△',ico_c:'ico-g',tags:['草むら','赤','岩'],
+   mats:['あかいくさ×4','おおきないし×1','さんかくの木×1'],
+   poke:[{n:'フクスロー',r:1}]},
+  {n:'うるおう赤い草むら',c:'g',ico:'💧',ico_c:'ico-g',tags:['草むら','赤','水'],
+   mats:['あかいくさ×4','みず×2'],
+   poke:[{n:'ハスボー',r:1},{n:'ハスブレロ',r:2}]},
+  {n:'さらさらな草むら',c:'g',ico:'🪨',ico_c:'ico-g',tags:['草むら','砂'],
+   mats:['さらさらいわ×1','かれたみどりのくさ×4'],
+   poke:[{n:'イワーク',r:1}]},
+  // ── 花畑系 ──
+  {n:'きれいな花畑',c:'f',ico:'🌸',ico_c:'ico-g',tags:['花畑','序盤'],
+   mats:['はらっぱのはな×4'],
+   poke:[{n:'ポッポ',r:1},{n:'ミツハニー',r:1},{n:'イーブイ',r:1},{n:'ホーホー',r:1},{n:'ブビィ',r:1},{n:'ピジョン',r:2}]},
+  {n:'木かげの花畑',c:'f',ico:'🌿',ico_c:'ico-g',tags:['花畑','木'],
+   mats:['はらっぱのはな×4','きのみの木（なんでも）×1'],
+   poke:[{n:'ヌメラ',r:1}]},
+  {n:'うるおう花畑',c:'f',ico:'💧',ico_c:'ico-g',tags:['花畑','水'],
+   mats:['はらっぱのはな×4','みず×2'],
+   poke:[{n:'バルビート',r:2}]},
+  {n:'花いっぱいの景色',c:'f',ico:'🌺',ico_c:'ico-g',tags:['花畑','大型'],
+   mats:['はらっぱのはな×8'],
+   poke:[{n:'ビークイン',r:1},{n:'フシギソウ',r:2},{n:'フシギバナ',r:3}]},
+  {n:'フラワーガーデン',c:'f',ico:'🌻',ico_c:'ico-g',tags:['花畑','庭'],
+   mats:['はらっぱのはな×4','いけがき（なんでも）×4'],
+   poke:[{n:'パラス',r:1}]},
+  {n:'すずしげな花畑',c:'f',ico:'🌼',ico_c:'ico-g',tags:['花畑','海辺'],
+   mats:['うみべのはな×4'],
+   poke:[{n:'パモ',r:1},{n:'ゾロア',r:1},{n:'ゾロアーク',r:2}]},
+  {n:'南国気分',c:'f',ico:'🌴',ico_c:'ico-g',tags:['花畑','南国'],
+   mats:['うみべのはな×4','おおきなヤシの木×1'],
+   poke:[{n:'クサイハナ',r:1},{n:'タマタマ',r:1},{n:'ナッシー',r:3}]},
+  {n:'風の花畑',c:'f',ico:'🌬️',ico_c:'ico-g',tags:['花畑','風'],
+   mats:['うみべのはな×1','風力はつでんマシン×1'],
+   poke:[{n:'キャモメ',r:1}]},
+  {n:'ガーデンテラス',c:'f',ico:'🌿',ico_c:'ico-g',tags:['花畑','庭園'],
+   mats:['はらっぱのはな×4','ガーデンテーブル×1','ガーデンライト×1','ガーデンチェア×1'],
+   poke:[]},
+  // ── フレッシュ野菜畑 ──
+  {n:'フレッシュ野菜畑',c:'f',ico:'🥕',ico_c:'ico-g',tags:['畑'],
+   mats:['野菜畑（なんでも）×8'],
+   poke:[{n:'モグリュー',r:1},{n:'ドリュウズ',r:2}]},
+  // ── 水辺・海 ──
+  {n:'トロピカルシーサイド',c:'w',ico:'🏖️',ico_c:'ico-w',tags:['海','南国'],
+   mats:['うみのみず×2','いけがき（なんでも）×4','おおきなヤシの木×1'],
+   poke:[{n:'ラプラス',r:1}]},
+  {n:'ビーチの木かげ',c:'w',ico:'🌴',ico_c:'ico-w',tags:['海','ビーチ'],
+   mats:['おおきなヤシの木×1','ビーチチェア×1'],
+   poke:[{n:'ナッシー',r:2},{n:'タマタマ',r:1}]},
+  {n:'水力はつでん所',c:'w',ico:'⚡',ico_c:'ico-w',tags:['水辺','施設'],
+   mats:['みず×2','たき×1','水力はつでんマシン×1'],
+   poke:[{n:'ポッタイシ',r:2}]},
+  {n:'船着き場',c:'w',ico:'⛵',ico_c:'ico-w',tags:['海','港'],
+   mats:['さんばし×4','がいとう（なんでも）×1','うみのみず×2'],
+   poke:[{n:'マリル',r:1}]},
+  {n:'日かげでプカプカ水遊び',c:'w',ico:'🛶',ico_c:'ico-w',tags:['水辺','リゾート'],
+   mats:['みず×2','ビーチパラソル×1','ビニールボート×1'],
+   poke:[]},
+  // ── 岩・砂 ──
+  {n:'きのみのごちそうキャンプ',c:'r',ico:'🏕️',ico_c:'ico-r',tags:['岩','キャンプ','晴れ'],
+   mats:['キャンプファイヤー×1','きのみいりバスケット×1','高いところ×1','てるてるポワルン（晴れ）×2'],
+   poke:[{n:'リザードン',r:2}]},
+  {n:'あまごいスポット',c:'r',ico:'🌧️',ico_c:'ico-r',tags:['砂','雨'],
+   mats:['皿にのせた食べ物×1','てるてるポワルン（雨）×2'],
+   poke:[{n:'ヌメラ',r:1}]},
+  {n:'にほんばれスポット',c:'r',ico:'☀️',ico_c:'ico-r',tags:['砂','晴れ'],
+   mats:['皿にのせた食べ物×1','てるてるポワルン（晴れ）×2'],
+   poke:[]},
+  {n:'ゴミ集積所',c:'r',ico:'🗑️',ico_c:'ico-r',tags:['都市','ゴミ'],
+   mats:['ゴミぶくろ×1','かんばん（なんでも）×1','ゴミ入れ（なんでも）×1'],
+   poke:[{n:'ヤブクロン',r:1},{n:'ダストダス',r:2}]},
+  {n:'ゴミ箱がいっぱい',c:'r',ico:'♻️',ico_c:'ico-r',tags:['都市','ゴミ'],
+   mats:['ゴミばこ×4'],
+   poke:[{n:'エレブー',r:2},{n:'レアコイル',r:2}]},
+  {n:'ゴミ捨て場',c:'r',ico:'⚡',ico_c:'ico-r',tags:['都市','ゴミ'],
+   mats:['ゴミぶくろ×1','でんちゅう×1'],
+   poke:[{n:'クロバット',r:2}]},
+  // ── 施設系 ──
+  {n:'あたたかな風に乗って',c:'l',ico:'🔥',ico_c:'ico-l',tags:['施設','焚き火'],
+   mats:['たきび×3'],
+   poke:[{n:'フワンテ',r:1,story:true}]},
+  {n:'キャンプセット',c:'l',ico:'⛺',ico_c:'ico-l',tags:['施設','キャンプ'],
+   mats:['ほしくさのテーブル×1','ほしくさのこしかけ×1','たきび×1'],
+   poke:[{n:'リザード',r:2}]},
+  {n:'腹ペコダイニング',c:'l',ico:'🍽️',ico_c:'ico-l',tags:['施設','食事'],
+   mats:['つくえ（なんでも）×1','皿にのせた食べ物×1','イス（なんでも）×1'],
+   poke:[{n:'ゴクリン',r:1}]},
+  {n:'腹ペコレストラン',c:'l',ico:'🍴',ico_c:'ico-l',tags:['施設','食事'],
+   mats:['つくえ（なんでも）×1','皿にのせた食べ物×1','イス（なんでも）×1','メニューボード×1'],
+   poke:[{n:'パモ',r:1},{n:'パモット',r:1}]},
+  {n:'緑のベンチ',c:'l',ico:'🪑',ico_c:'ico-l',tags:['施設','ベンチ'],
+   mats:['いけがき（なんでも）×2','イス（長いもの）×1'],
+   poke:[{n:'フシギソウ',r:1},{n:'フシギダネ',r:1,story:true}]},
+  {n:'照らされたベンチ',c:'l',ico:'🌟',ico_c:'ico-l',tags:['施設','夜'],
+   mats:['がいとう（なんでも）×1','イス（長いもの）×1'],
+   poke:[{n:'コンパン',r:1},{n:'モルフォン',r:2}]},
+  {n:'ジムの休けい所',c:'l',ico:'💪',ico_c:'ico-l',tags:['施設','ジム'],
+   mats:['サンドバッグ×1','イス（なんでも）×1'],
+   poke:[{n:'エビワラー',r:1}]},
+  {n:'かけこみ救急所',c:'l',ico:'🚑',ico_c:'ico-l',tags:['施設','医療'],
+   mats:['きゅうきゅうばこ×1','つくえ（なんでも）×1','イス（なんでも）×1'],
+   poke:[{n:'サワムラー',r:1}]},
+  {n:'ジムの救急所',c:'l',ico:'🏥',ico_c:'ico-l',tags:['施設','ジム'],
+   mats:['きゅうきゅうばこ×1','サンドバッグ×1','つくえ（なんでも）×1'],
+   poke:[]},
+  {n:'道案内のカンバン',c:'l',ico:'↗️',ico_c:'ico-l',tags:['施設','道'],
+   mats:['やじるしかんばん×1','木のみち×3'],
+   poke:[{n:'カラナクシ',r:2},{n:'カラナクシ',r:2}]},
+  {n:'大きな荷物をのせて',c:'l',ico:'🚛',ico_c:'ico-l',tags:['施設','運搬'],
+   mats:['にぐるま×1','木ばこ×2'],
+   poke:[{n:'ドテッコツ',r:1}]},
+  {n:'やさしい光でおやすみ',c:'l',ico:'🕯️',ico_c:'ico-l',tags:['施設','夜','寝室'],
+   mats:['つくえ（なんでも）×1','ほそながキャンドル×1','ベッド（なんでも）×1'],
+   poke:[{n:'ホーホー',r:1}]},
+  {n:'ラッキー休けい所',c:'l',ico:'🍀',ico_c:'ico-l',tags:['施設','ラッキー'],
+   mats:['いけがき（なんでも）×6','ラッキーのうえ木×1','イス（長いもの）×1'],
+   poke:[{n:'キレイハナ',r:2}]},
+  {n:'明かりと香りのユウワク',c:'l',ico:'🍄',ico_c:'ico-l',tags:['施設','夜'],
+   mats:['キノコのランプ×1','皿にのせた食べ物×1','ツボかびん×1'],
+   poke:[{n:'ウツドン',r:1},{n:'ウツボット',r:2}]},
+  {n:'木かげでぐっすりカビゴン',c:'l',ico:'😴',ico_c:'ico-l',tags:['施設','カビゴン'],
+   mats:['大きな木（なんでも）×1','いねむりベッド×1'],
+   poke:[{n:'カビゴン',r:2,story:true}]},
+  {n:'お休みどころ',c:'l',ico:'📦',ico_c:'ico-l',tags:['施設','休憩'],
+   mats:['ほしくさのベッド×1','だんボールのはこ×1'],
+   poke:[{n:'ニャース',r:1}]},
+  {n:'おかたづけをしよう',c:'l',ico:'🧸',ico_c:'ico-l',tags:['施設','おもちゃ'],
+   mats:['だんボールのはこ×1','おもちゃ（なんでも）×2'],
+   poke:[{n:'ガーディ',r:1},{n:'ルリリ',r:1}]},
+  {n:'ピヨピヨごはん',c:'l',ico:'🐔',ico_c:'ico-l',tags:['施設','食事'],
+   mats:['つくえ（なんでも）×1','皿にのせた食べ物×1','木のすばこ×1'],
+   poke:[{n:'アチャモ',r:1}]},
+  {n:'ビーチセット',c:'l',ico:'🏖️',ico_c:'ico-l',tags:['施設','ビーチ'],
+   mats:['サイドテーブル×1','ビーチパラソル×1','ビーチチェア×1'],
+   poke:[]},
+  {n:'夜のお祭り会場',c:'l',ico:'🎪',ico_c:'ico-l',tags:['施設','夜'],
+   mats:['ふうせん×2','ライチュウかんばん×1'],
+   poke:[{n:'モココ',r:1}]},
+  {n:'お着がえスペース',c:'l',ico:'👗',ico_c:'ico-l',tags:['施設','着替え'],
+   mats:['かがみ（大きなもの）×1','クローゼット（なんでも）×1'],
+   poke:[{n:'チラーミィ',r:1}]},
+  {n:'毛糸で編み物',c:'l',ico:'🧶',ico_c:'ico-l',tags:['施設','手芸'],
+   mats:['つくえ（なんでも）×1','イス（なんでも）×1','あみものキット×1'],
+   poke:[{n:'メリープ',r:1},{n:'モココ',r:2}]},
+  {n:'リゾートでご飯のしたく',c:'l',ico:'🏝️',ico_c:'ico-l',tags:['施設','南国'],
+   mats:['たきび×1','皿にのせた食べ物×1','イス（なんでも）×1','おおきなヤシの木×1'],
+   poke:[{n:'ガーディ',r:1},{n:'アチャモ',r:1},{n:'ワカシャモ',r:2}]},
+  {n:'荷づくりできたよ',c:'l',ico:'📫',ico_c:'ico-l',tags:['施設','運搬'],
+   mats:['だんボールのはこ×2','にぐるま×1'],
+   poke:[{n:'カモネギ',r:1},{n:'マクノシタ',r:1},{n:'ハリテヤマ',r:2}]},
+  {n:'目覚ましベッドスペース',c:'l',ico:'⏰',ico_c:'ico-l',tags:['施設','寝室'],
+   mats:['つくえ（なんでも）×1','ベッド（なんでも）×1','めざましどけい×1'],
+   poke:[{n:'ピンプク',r:1}]},
+  {n:'レジでお会計',c:'l',ico:'🛒',ico_c:'ico-l',tags:['施設','ショップ'],
+   mats:['つくえ（なんでも）×2','レジ×1'],
+   poke:[{n:'ピンプク',r:1},{n:'タブンネ',r:1},{n:'ニャース',r:1}]},
+  {n:'お墓にお供えもの',c:'e',ico:'🪦',ico_c:'ico-e',tags:['特殊','夜'],
+   mats:['はかいし×1','ほそながキャンドル×2','皿にのせた食べ物×1'],
+   poke:[]},
+  {n:'ブキミなお墓にお供えもの',c:'e',ico:'💀',ico_c:'ico-e',tags:['特殊','怖い'],
+   mats:['はかいし×1','皿にのせた食べ物×1','あやしいキャンドル×2'],
+   poke:[]},
+  {n:'温泉の洗い場',c:'e',ico:'♨️',ico_c:'ico-e',tags:['特殊','温泉'],
+   mats:['おんせん×2','イス（なんでも）×1','シャワー×1'],
+   poke:[]},
+];
+
+// ─ RECIPES (実データ全24種) ─
+const RECS = [
+  // サラダ
+  {n:'プレーンサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:false,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'自由枠'}],poke:[],
+   eff:'「このは」が強化される（広範囲に草を生やせる）',off:'—'},
+  {n:'ヒメリサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:true,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'ヒメリのみ'}],poke:[],
+   eff:'「このは」が強化される',off:'序盤ポケモンへのプレゼントにも◎'},
+  {n:'かいそうサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:false,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'かいそう'}],poke:[],
+   eff:'「このは」が強化される',off:'—'},
+  {n:'すりつぶしサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:false,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'カゴのみ'}],poke:[{t:'poke',n:'つぶす得意ポケモン'}],
+   eff:'「このは」が強化される',off:'—'},
+  {n:'クルトンサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:true,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'パン（自由）'}],poke:[],
+   eff:'「このは」が強化される（辛味）',off:'こけカビゴンへのお供えでポケモン出現率UP'},
+  {n:'せんぎりサラダ',c:'s',ico:'🥗',ico_c:'ico-sal',story:false,
+   mats:[{t:'main',n:'はっぱ'},{t:'free',n:'自由枠'}],poke:[{t:'poke',n:'きをきる得意ポケモン'}],
+   eff:'「このは」が強化される',off:'—'},
+  // ハンバーグ
+  {n:'プレーンハンバーグ',c:'h',ico:'🍔',ico_c:'ico-ham',story:false,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'自由×3'}],poke:[],
+   eff:'「いわくだき」が強化される',off:'めずらしいものが見つかりやすくなる'},
+  {n:'きのこハンバーグ',c:'h',ico:'🍄',ico_c:'ico-ham',story:false,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'たべごろキノコ'},{t:'free',n:'自由×2'}],poke:[],
+   eff:'「いわくだき」が強化される',off:'めずらしいものが見つかりやすくなる'},
+  {n:'トマトハンバーグ',c:'h',ico:'🍅',ico_c:'ico-ham',story:false,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'トマト'},{t:'free',n:'自由×2'}],poke:[],
+   eff:'「いわくだき」が強化される',off:'ショップにいいものが並びやすくなる'},
+  {n:'ジャガイモハンバーグ',c:'h',ico:'🥔',ico_c:'ico-ham',story:true,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'ジャガイモ'},{t:'free',n:'自由×2'}],poke:[],
+   eff:'「いわくだき」がとても強化される ★おすすめ',off:'めずらしいものがかなり見つかりやすくなる'},
+  {n:'いろどりハンバーグ',c:'h',ico:'🌈',ico_c:'ico-ham',story:true,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'サラダ（自由）'},{t:'free',n:'ジャガイモ'},{t:'free',n:'自由'}],poke:[],
+   eff:'「いわくだき」がとても強化される',off:'めずらしいものがかなり見つかりやすくなる'},
+  {n:'おとなのハンバーグ',c:'h',ico:'⭐',ico_c:'ico-ham',story:false,
+   mats:[{t:'main',n:'マメ'},{t:'free',n:'ラムのみ'},{t:'free',n:'チーゴのみ'},{t:'free',n:'自由'}],poke:[],
+   eff:'「いわくだき」が強化される（特殊）',off:'—'},
+  // スープ
+  {n:'プレーンスープ',c:'u',ico:'🍲',ico_c:'ico-sou',story:false,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'自由×2'}],poke:[],
+   eff:'「みずでっぽう」が強化される',off:'—'},
+  {n:'かいそうスープ',c:'u',ico:'🌊',ico_c:'ico-sou',story:false,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'かいそう'},{t:'free',n:'自由'}],poke:[],
+   eff:'「みずでっぽう」が強化される',off:'—'},
+  {n:'キノコスープ',c:'u',ico:'🍄',ico_c:'ico-sou',story:false,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'たべごろキノコ'},{t:'free',n:'自由'}],poke:[],
+   eff:'「みずでっぽう」が強化される',off:'—'},
+  {n:'やくぜんスープ',c:'u',ico:'🌿',ico_c:'ico-sou',story:true,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'はっぱ'},{t:'free',n:'マメ'}],poke:[],
+   eff:'「みずでっぽう」がとても強化される',off:'こけカビゴンお供えでポケモン出現率がかなりUP'},
+  {n:'ジューシースープ',c:'u',ico:'🥩',ico_c:'ico-sou',story:false,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'ハンバーグ（自由）'},{t:'free',n:'ナナシのみ'}],poke:[],
+   eff:'「みずでっぽう」が強化される',off:'—'},
+  {n:'ビリビリスープ',c:'u',ico:'⚡',ico_c:'ico-sou',story:false,
+   mats:[{t:'main',n:'おいしいみず'},{t:'free',n:'自由×2'}],poke:[{t:'poke',n:'はつでん得意ポケモン'}],
+   eff:'「みずでっぽう」が強化される（特殊）',off:'—'},
+  // パン
+  {n:'プレーンパン',c:'p',ico:'🍞',ico_c:'ico-bre',story:true,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'自由×2'}],poke:[{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化され硬いものも壊せる',off:'生息地にポケモンが現れやすくなる'},
+  {n:'ヒメリパン',c:'p',ico:'🍞',ico_c:'ico-bre',story:false,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'ヒメリのみ'},{t:'free',n:'自由'}],poke:[{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化される',off:'—'},
+  {n:'キャロットパン',c:'p',ico:'🥕',ico_c:'ico-bre',story:false,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'たべごろニンジン'},{t:'free',n:'自由'}],poke:[{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化される',off:'—'},
+  {n:'ふわふわパン',c:'p',ico:'🫓',ico_c:'ico-bre',story:false,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'モモンのみ'},{t:'free',n:'自由'}],poke:[{t:'poke',n:'うるおす得意ポケモン'},{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化される（特殊）',off:'—'},
+  {n:'リメイクパン',c:'p',ico:'♻️',ico_c:'ico-bre',story:false,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'パン（自由）'},{t:'free',n:'自由'}],poke:[{t:'poke',n:'リサイクル得意ポケモン'},{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化される（特殊）',off:'—'},
+  {n:'アツアツスープパン',c:'p',ico:'🫕',ico_c:'ico-bre',story:true,
+   mats:[{t:'main',n:'コムギ'},{t:'free',n:'スープ（自由）'},{t:'free',n:'きのみ（自由）'}],poke:[{t:'poke',n:'もやす得意ポケモン（必須）'}],
+   eff:'「いあいぎり」が強化される（辛味）',off:'こけカビゴンお供えでポケモン出現率がかなりUP'},
+];
+
+// ════════ STATE ════════
+let habCat='all', recCat='all', storyShow=false;
+
+// ════════ RENDER ════════
+function renderHab(){
+  const q=document.getElementById('hs').value.toLowerCase();
+  const g=document.getElementById('hab-grid');
+  g.innerHTML='';
+  let cnt=0;
+  HABS.forEach(h=>{
+    const pokeStr = h.poke.map(p=>p.n).join(' ');
+    const matStr  = h.mats.join(' ');
+    const match =
+      (habCat==='all'||h.c===habCat) &&
+      (h.n.toLowerCase().includes(q)||matStr.toLowerCase().includes(q)||pokeStr.toLowerCase().includes(q)||h.tags.join(' ').toLowerCase().includes(q));
+    if(!match) return;
+    cnt++;
+    const tagHtml = h.tags.map(t=>`<span class="ht ht-g">${t}</span>`).join('');
+    const matHtml = h.mats.map(m=>`<div class="mat-row">${m}</div>`).join('');
+    const pokeHtml = h.poke.map(p=>{
+      const rc = p.story?'story':p.r===3?'r3':p.r===2?'r2':'r1';
+      const star = '★'.repeat(p.r);
+      return `<span class="ptag ${rc}">${p.story?'⭐ ':''}${p.n} ${star}</span>`;
+    }).join('');
+    const d=document.createElement('div');
+    d.className='hc';
+    d.innerHTML=`
+      <div class="hc-head">
+        <div class="hc-ico ${h.ico_c}">${h.ico}</div>
+        <div class="hc-meta">
+          <div class="hc-name">${h.n}</div>
+          <div class="hc-tags">${tagHtml}</div>
+        </div>
+      </div>
+      <div class="hc-body">
+        ${matHtml}
+        ${pokeHtml?`<div class="poke-row">${pokeHtml}</div>`:''}
+      </div>`;
+    g.appendChild(d);
+  });
+  document.getElementById('hcnt').innerHTML=`<b>${cnt}</b> 件の生息地`;
+  if(!cnt) g.innerHTML=`<div style="text-align:center;padding:40px;color:var(--dim);grid-column:1/-1">🔍 「${q}」に一致する生息地が見つかりません</div>`;
+}
+
+function renderRec(){
+  const q=document.getElementById('rs').value.toLowerCase();
+  const g=document.getElementById('rec-grid');
+  g.innerHTML='';
+  let cnt=0;
+  RECS.forEach(r=>{
+    const matStr = r.mats.map(m=>m.n).join(' ');
+    const match =
+      (recCat==='all'||r.c===recCat) &&
+      (r.n.toLowerCase().includes(q)||matStr.toLowerCase().includes(q)||r.eff.toLowerCase().includes(q));
+    if(!match) return;
+    cnt++;
+    const catMap={s:'cat-s',h:'cat-h',u:'cat-u',p:'cat-p'};
+    const catLabel={s:'🥗 サラダ',h:'🍔 ハンバーグ',u:'🍲 スープ',p:'🍞 パン'};
+    const matHtml = r.mats.map(m=>`<span class="mp ${m.t}">${m.n}</span>`).join('');
+    const pokeHtml = r.poke.map(p=>`<span class="mp poke">🐾 ${p.n}</span>`).join('');
+    const d=document.createElement('div');
+    d.className='rc'+(r.story?' story-pick':'');
+    d.innerHTML=`
+      <div class="rc-head">
+        <div class="rc-ico ${r.ico_c}">${r.ico}</div>
+        <div class="rc-info">
+          <div class="rc-name">${r.n}</div>
+          <span class="rc-cat ${catMap[r.c]}">${catLabel[r.c]}</span>
+        </div>
+      </div>
+      <div class="rc-mats">
+        <div class="rc-mats-title">🧺 素材</div>
+        <div class="mpills">${matHtml}${pokeHtml}</div>
+      </div>
+      <div class="rc-eff"><strong>効果：</strong>${r.eff}</div>
+      ${r.off&&r.off!=='—'?`<div class="rc-offer">🍖 お供え：${r.off}</div>`:''}`;
+    g.appendChild(d);
+  });
+  document.getElementById('rcnt').innerHTML=`<b>${cnt}</b> 件の料理レシピ`;
+  if(!cnt) g.innerHTML=`<div style="text-align:center;padding:40px;color:var(--dim);grid-column:1/-1">🔍 「${q}」に一致するレシピが見つかりません</div>`;
+}
+
+function renderSpotlight(){
+  // HAB spotlight
+  const hg=document.getElementById('spot-hab-grid');
+  hg.innerHTML='';
+  STORY_POK.forEach(p=>{
+    const d=document.createElement('div');
+    d.className='spot-card';
+    d.innerHTML=`
+      <span class="sc-icon">${p.icon}</span>
+      <div class="sc-name">${p.name}</div>
+      <div class="sc-role">${p.role}</div>
+      <div class="sc-desc">${p.desc}</div>
+      <span class="sc-tag">${p.tag}</span>
+      ${p.recipe?`<div class="sc-recipe">🍳 ${p.recipe}</div>`:''}`;
+    hg.appendChild(d);
+  });
+  // REC spotlight
+  const rg=document.getElementById('spot-rec-grid');
+  rg.innerHTML='';
+  STORY_REC.forEach(r=>{
+    const d=document.createElement('div');
+    d.className='spot-card';
+    d.innerHTML=`
+      <span class="sc-icon">${r.icon}</span>
+      <div class="sc-name">${r.name}</div>
+      <div class="sc-role">${r.role}</div>
+      <div class="sc-desc">${r.desc}</div>
+      <span class="sc-tag">${r.key}</span>`;
+    rg.appendChild(d);
+  });
+}
+
+// ════════ CONTROLS ════════
+function fh(){ renderHab(); }
+function fr(){ renderRec(); }
+
+function sc(el,cat,mode){
+  if(mode==='h'){
+    habCat=cat;
+    document.querySelectorAll('#hchips .chip').forEach(c=>c.classList.remove('on'));
+    el.classList.add('on');
+    renderHab();
+  }
+}
+
+function srs(cat,btn){
+  recCat=cat;
+  document.querySelectorAll('.rsub').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderRec();
+}
+
+function sw(id,btn){
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pane-'+id).classList.add('on');
+  btn.classList.add('on');
+  // ボトムナビも同期
+  document.querySelectorAll('.bn-btn').forEach(b=>{
+    if(b.getAttribute('data-pane')===id) b.classList.add('on');
+  });
+}
+
+function toggleStory(){
+  storyShow=!storyShow;
+  const btn=document.getElementById('story-btn');
+  document.querySelectorAll('.story-section').forEach(s=>s.classList.toggle('show',storyShow));
+  btn.textContent=storyShow
+    ?'⭐ ストーリー重要ポケモン＆レシピ ピックアップを隠す ▲'
+    :'⭐ ストーリー重要ポケモン＆レシピ ピックアップを表示する ▼';
+}
+
+// ════════ CRAFT DATA ════════
+// how: story/shop/field/zukan/yume/trade
+// cat: 家具/ざっか/おくがい/べんり/たてもの/ブロック
+const CRAFTS = [
+  // ── ストーリー進行 ──
+  {n:'まるたのイス',      how:'story',cat:'家具',   icon:'🪑', mats:['ちいさなまるた×1'],
+   cond:'ストーリー序盤　モジャンボ博士からの最初の依頼クリア後に入手'},
+  {n:'ほしくさのテーブル',how:'story',cat:'家具',   icon:'🌿', mats:['いし×1','はっぱ×1'],
+   cond:'ストーリー序盤　モジャンボのおねがいごと進行中に入手'},
+  {n:'ほしくさのこしかけ',how:'story',cat:'家具',   icon:'🌿', mats:['はっぱ×1'],
+   cond:'ストーリー序盤　最初の家具クラフト解放時'},
+  {n:'まないた',          how:'story',cat:'べんり', icon:'🔪', mats:['ちいさなまるた×2'],
+   cond:'ゴツゴツやまの街　ストーリー進行で自動解放（料理システム解放）'},
+  {n:'フライパン',        how:'story',cat:'べんり', icon:'🍳', mats:['ポケメタル×3','かわ×1'],
+   cond:'ゴツゴツやまの街　ストーリー進行で自動解放'},
+  {n:'パンがま',          how:'story',cat:'べんり', icon:'🔥', mats:['ポケメタル×5','ねんど×3'],
+   cond:'ゴツゴツやまの街　ストーリー進行で自動解放（もやす得意ポケモン必要）'},
+  {n:'なべ',              how:'story',cat:'べんり', icon:'🥘', mats:['ポケメタル×4','かわ×1'],
+   cond:'ゴツゴツやまの街の洞窟奥　金網の壁の中に落ちている（いあいぎり強化後に取得可）'},
+  {n:'きゅうきゅうばこ',  how:'story',cat:'ざっか', icon:'🧰', mats:['ポケメタル×2','はっぱ×1'],
+   cond:'ストーリー中盤　サワムラーのお願いごと進行で解放'},
+  {n:'さんばし',          how:'story',cat:'おくがい',icon:'⛵', mats:['ざいもく×4','てつ×2'],
+   cond:'ドンヨリうみべの街　ストーリー進行で解放'},
+  {n:'でんちゅう',        how:'story',cat:'おくがい',icon:'💡', mats:['ポケメタル×2','ガラス×1'],
+   cond:'ドンヨリうみべの街　街灯点灯イベント後に解放'},
+  {n:'ダウジングマシン',  how:'story',cat:'べんり', icon:'📡', mats:['ポケメタル×3','クリスタル×1'],
+   cond:'ストーリー中盤　さがしものが得意なポケモンと組み合わせて使う'},
+
+  // ── ショップ購入 ──
+  {n:'きのみの木（なんでも）',how:'shop',cat:'おくがい',icon:'🌳', mats:['きのみのたね×1','つち×2'],
+   cond:'パサパサこうやの街　ショップに常設（序盤から購入可）'},
+  {n:'おおきなヤシの木',  how:'shop',cat:'おくがい',icon:'🌴', mats:['ヤシのみのたね×2','うみのすな×3'],
+   cond:'ドンヨリうみべの街　Lv2以上でショップに登場'},
+  {n:'野菜畑（なんでも）',how:'shop',cat:'おくがい',icon:'🥕', mats:['つち×3','たい肥×2'],
+   cond:'ドンヨリうみべの街　Lv2以上でショップに登場'},
+  {n:'うみべのいえセット',how:'shop',cat:'たてもの',icon:'🏠', mats:['ざいもく×8','かいがら×4','うみのすな×3'],
+   cond:'ドンヨリうみべの街　Lv3　「うみべのいえづくりレシピセット」を購入'},
+  {n:'いしやね各種',      how:'shop',cat:'たてもの',icon:'🏰', mats:['いわ×6〜10','モルタル×2〜4'],
+   cond:'ゴツゴツやまの街　Lv5　「いしやねのレシピセット」を購入'},
+  {n:'やね各種',          how:'shop',cat:'たてもの',icon:'🏡', mats:['ざいもく×4〜8','かわら×2〜4'],
+   cond:'ドンヨリうみべの街　Lv5　「やねのレシピセット」を購入'},
+  {n:'木のけんざい各種',  how:'shop',cat:'ブロック', icon:'🪵', mats:['ざいもく×2〜4'],
+   cond:'パサパサこうやの街　Lv3　「木のけんざいレシピセット」を購入'},
+  {n:'こうやのいえセット',how:'shop',cat:'たてもの',icon:'🏜️', mats:['ざいもく×6','かれくさ×3','すな×4'],
+   cond:'パサパサこうやの街　Lv3　「こうやのいえづくりレシピセット」を購入'},
+  {n:'うきしまのいえセット',how:'shop',cat:'たてもの',icon:'🏝️', mats:['ざいもく×6','ガラス×2','うきしまのいし×2'],
+   cond:'キラキラうきしまの街　Lv3　「うきしまのいえづくりレシピセット」を購入'},
+  {n:'ミニはつでんマシン', how:'shop',cat:'べんり', icon:'⚡', mats:['ポケメタル×3','どうののべぼう×2'],
+   cond:'キラキラうきしまの街　Lv6　「ミニはつでんマシンのレシピ」を購入（高額）'},
+  {n:'ゲームボーイ',      how:'shop',cat:'ざっか', icon:'🎮', mats:['ポケメタル×2','ガラス×2','きんののべぼう×1'],
+   cond:'キラキラうきしまの街　Lv5　1000コインで購入（環境レベル5が条件）'},
+  {n:'エレベーターのりば', how:'shop',cat:'べんり', icon:'🛗', mats:['ポケメタル×6','ガラス×3','きんののべぼう×2'],
+   cond:'キラキラうきしまの街　Lv8　「エレベーターのりばのレシピ」を購入'},
+  {n:'インダストリアルなベッド',how:'shop',cat:'家具',icon:'🛏️', mats:['ポケメタル×2','わた×3','ざいもく×2'],
+   cond:'ゴツゴツやまの街　Lv4　ショップで購入'},
+  {n:'リゾートなライト',  how:'shop',cat:'ざっか', icon:'🕯️', mats:['つたひも×2','ガラス×1','ポケメタル×1'],
+   cond:'ドンヨリうみべの街　Lv4　ショップで購入（日替わりにも登場）'},
+  {n:'オフィスのデスク',  how:'shop',cat:'家具',   icon:'💻', mats:['ポケメタル×2'],
+   cond:'キラキラうきしまの街　Lv3以上のショップに登場（日替わり枠含む）'},
+  {n:'ガーデンテーブル',  how:'shop',cat:'家具',   icon:'🌿', mats:['てつ×2'],
+   cond:'パサパサこうやの街　Lv2以上でショップに登場'},
+  {n:'ガーデンチェア',    how:'shop',cat:'家具',   icon:'🪑', mats:['てつ×2'],
+   cond:'パサパサこうやの街　Lv2以上でショップに登場'},
+  {n:'きのみの家具シリーズ各種',how:'shop',cat:'家具',icon:'🍎', mats:['きのみ系素材×2〜4'],
+   cond:'パサパサこうやの街　環境レベルMAXに到達するとショップで解放'},
+  {n:'ビーチパラソル',    how:'shop',cat:'おくがい',icon:'⛱️', mats:['いとくず×2','ポケメタル×1'],
+   cond:'ドンヨリうみべの街　Lv2以上でショップに登場'},
+  {n:'ビーチチェア',      how:'shop',cat:'家具',   icon:'🏖️', mats:['いとくず×2','わた×1'],
+   cond:'ドンヨリうみべの街　Lv2以上でショップに登場'},
+  {n:'ほしのかけら',      how:'shop',cat:'べんり', icon:'⭐', mats:['ほしのすな×99'],
+   cond:'ゆめしまで99個集めたほしのすなでクラフト（おすそわけで使用）'},
+
+  // ── フィールド拾得 ──
+  {n:'オシャレなこしかけ', how:'field',cat:'家具',  icon:'💺', mats:['いとくず×1','ざいもく×1'],
+   cond:'図鑑100匹登録報酬 or ドンヨリうみべの街のフィールドで拾える（ショップ日替わりにも登場）'},
+  {n:'だんボールのはこ',  how:'field',cat:'ざっか', icon:'📦', mats:['ざいもく×1'],
+   cond:'各マップのフィールドに落ちている　ストーリー序盤から入手可'},
+  {n:'にぐるま',          how:'field',cat:'ざっか', icon:'🛒', mats:['ざいもく×2','てつ×1'],
+   cond:'フィールドに落ちている　または パサパサこうやのショップで購入'},
+  {n:'ほしくさのベッド',  how:'field',cat:'家具',   icon:'🛏️', mats:['はっぱ×3','ちいさなまるた×1'],
+   cond:'フィールドに落ちている　または 序盤のストーリー進行で入手'},
+  {n:'やじるしかんばん',  how:'field',cat:'ざっか', icon:'↗️', mats:['ざいもく×1'],
+   cond:'フィールドに落ちている　または ショップで購入'},
+  {n:'木のみち',          how:'field',cat:'おくがい',icon:'🪵', mats:['ざいもく×2'],
+   cond:'フィールドに落ちている　「道案内のカンバン」生息地に必要'},
+  {n:'サンドバッグ',      how:'field',cat:'ざっか', icon:'🥊', mats:['いとくず×3','わた×2'],
+   cond:'フィールドに落ちている　「ジムの休けい所」「ジムの救急所」生息地に必要'},
+  {n:'じどうはんばいき',  how:'field',cat:'ざっか', icon:'🟡', mats:['ポケメタル×4','ガラス×2'],
+   cond:'キラキラうきしまの街のフィールドで入手　または ショップ日替わり'},
+  {n:'風力はつでんマシン',how:'field',cat:'べんり', icon:'🌬️', mats:['ポケメタル×4','どうののべぼう×2'],
+   cond:'キラキラうきしまの街のフィールドで拾える　「風の花畑」生息地に必要'},
+  {n:'たき',              how:'field',cat:'おくがい',icon:'💦', mats:['いわ×6','みず×3'],
+   cond:'ゴツゴツやまの街のフィールドに落ちている（または洞窟内で拾う）'},
+  {n:'いねむりベッド',    how:'field',cat:'家具',   icon:'😴', mats:['ざいもく×2','わた×3'],
+   cond:'フィールドに落ちている　「木かげでぐっすりカビゴン」生息地に必要'},
+  {n:'ラッキーのうえ木',  how:'field',cat:'おくがい',icon:'🍀', mats:['きのみのたね×1','ラッキーのはな×2'],
+   cond:'ドンヨリうみべの街のフィールドで拾う（レア素材）「ラッキー休けい所」に必要'},
+  {n:'キノコのランプ',    how:'field',cat:'ざっか', icon:'🍄', mats:['きのこ×3','ポケメタル×1'],
+   cond:'ゴツゴツやまの街のフィールドで拾う　「明かりと香りのユウワク」生息地に必要'},
+  {n:'ツボかびん',        how:'field',cat:'ざっか', icon:'🏺', mats:['いわ×2','はっぱ×1'],
+   cond:'フィールドに落ちている　または ショップ日替わり枠'},
+  {n:'ビニールボート',    how:'field',cat:'ざっか', icon:'🛶', mats:['いとくず×3'],
+   cond:'ドンヨリうみべの街のフィールドで入手　「日かげでプカプカ水遊び」に必要'},
+  {n:'メニューボード',    how:'field',cat:'ざっか', icon:'📋', mats:['ざいもく×1','てつ×1'],
+   cond:'フィールドに落ちている　または ショップ購入'},
+  {n:'ふうせん',          how:'field',cat:'ざっか', icon:'🎈', mats:['いとくず×1'],
+   cond:'フィールドに落ちている　「夜のお祭り会場」生息地に必要'},
+
+  // ── 図鑑登録報酬 ──
+  {n:'まるたのテーブル（図鑑5匹）',how:'zukan',cat:'家具',  icon:'📖', mats:['ちいさなまるた×1'],
+   cond:'ポケモン図鑑　5匹登録で入手'},
+  {n:'ナチュラルなチェスト（図鑑10匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','ざいもく×1'],
+   cond:'ポケモン図鑑　10匹登録で入手'},
+  {n:'シンプルなクッション（図鑑15匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','わた×1'],
+   cond:'ポケモン図鑑　15匹登録で入手'},
+  {n:'ナチュラルなこしかけ（図鑑20匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','ざいもく×1'],
+   cond:'ポケモン図鑑　20匹登録で入手'},
+  {n:'ナチュラルなイス（図鑑25匹）',how:'zukan',cat:'家具',  icon:'📖', mats:['いとくず×1','ざいもく×1'],
+   cond:'ポケモン図鑑　25匹登録で入手'},
+  {n:'ナチュラルなテーブル（図鑑30匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×2','ざいもく×1'],
+   cond:'ポケモン図鑑　30匹登録で入手'},
+  {n:'ナチュラルなソファ（図鑑35匹）',how:'zukan',cat:'家具', icon:'📖', mats:['ざいもく×1','わた×1'],
+   cond:'ポケモン図鑑　35匹登録で入手'},
+  {n:'ナチュラルなクローゼット（図鑑40匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','ざいもく×2'],
+   cond:'ポケモン図鑑　40匹登録で入手'},
+  {n:'ナチュラルなだい（図鑑45匹）',how:'zukan',cat:'家具',   icon:'📖', mats:['いとくず×1','ざいもく×2'],
+   cond:'ポケモン図鑑　45匹登録で入手'},
+  {n:'ナチュラルなベッド（図鑑50匹）',how:'zukan',cat:'家具', icon:'📖', mats:['いとくず×2','ざいもく×2','わた×1'],
+   cond:'ポケモン図鑑　50匹登録で入手'},
+  {n:'各種アンティーク家具（図鑑55〜75匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','てつ×1〜2','ざいもく×2'],
+   cond:'ポケモン図鑑　55〜75匹登録（5匹ごとに1種解放）'},
+  {n:'各種リゾート家具（図鑑80〜95匹）',how:'zukan',cat:'家具',icon:'📖', mats:['つたひも×1〜2','ざいもく×1〜2','わた×1〜2'],
+   cond:'ポケモン図鑑　80〜95匹登録（5匹ごとに1種解放）'},
+  {n:'オシャレなこしかけ（図鑑100匹）', how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1','ざいもく×1'],
+   cond:'ポケモン図鑑　100匹登録　※フィールドやショップ日替わりでも入手可'},
+  {n:'各種シック・ポップ・キュート家具（図鑑110〜190匹）',how:'zukan',cat:'家具',icon:'📖', mats:['いとくず×1〜2','ざいもく×1〜2','ポケメタル×1〜2'],
+   cond:'ポケモン図鑑　110〜190匹（10匹ごとに1種解放）'},
+  {n:'各種ゴージャス家具（図鑑200〜290匹）',how:'zukan',cat:'家具',icon:'📖', mats:['せっかいせき×2〜4','きんののべぼう×1〜2'],
+   cond:'ポケモン図鑑　200〜290匹（10匹ごとに1種解放）'},
+  {n:'ネオダウジングマシン（図鑑300匹）',how:'zukan',cat:'べんり',icon:'🔮', mats:['クラフト不要（入手するだけ）'],
+   cond:'ポケモン図鑑　全300匹登録完了　キラキラうきしまの街の特別な場所でプリンターから入手（唯一図鑑からのみ入手可能な特別なアイテム）'},
+
+  // ── ゆめしまで入手 ──
+  {n:'ふたごのひむろ',    how:'yume', cat:'ざっか', icon:'❄️', mats:['こおり×6','いわ×3','かがみ×1'],
+   cond:'ゆめしまのランダム出現アイテム　または ショップ日替わり枠　フリーザーを呼ぶ生息地に必要'},
+  {n:'ともしびのさいだん', how:'yume', cat:'ざっか', icon:'🔥', mats:['いわ×4','ほのおのいし×2','きんののべぼう×1'],
+   cond:'ゆめしまのランダム出現アイテム　ファイヤーを呼ぶ生息地に必要'},
+  {n:'むじんはつでんしょ', how:'yume', cat:'べんり', icon:'⚡', mats:['ポケメタル×6','きかいのゆびわ×2','でんき×3'],
+   cond:'キラキラうきしまの街　Lv6ショップ or ゆめしまのレアアイテム　サンダーを呼ぶ生息地に必要'},
+  {n:'レアポケメタル家具各種',how:'yume',cat:'家具', icon:'🏝️', mats:['レアポケメタル×2〜4'],
+   cond:'ゆめしまの地下　ひびわれたブロックの奥にランダム出現するレアアイテム'},
+  {n:'きのみいりバスケット',how:'yume',cat:'ざっか', icon:'🧺', mats:['つたひも×3','いとくず×2'],
+   cond:'ゆめしまのフィールドに落ちている　「きのみのごちそうキャンプ」生息地に必要'},
+  {n:'てるてるポワルン（雨）',how:'yume',cat:'ざっか',icon:'🌧️', mats:['いとくず×2','みず×1'],
+   cond:'ゆめしまのフィールドで入手　各種天候スポット生息地に必要（雨）'},
+  {n:'てるてるポワルン（晴れ）',how:'yume',cat:'ざっか',icon:'☀️', mats:['いとくず×2','ひのこ×1'],
+   cond:'ゆめしまのフィールドで入手　各種天候スポット生息地に必要（晴れ）'},
+  {n:'メニューボード（高品質）',how:'yume',cat:'ざっか',icon:'📋', mats:['ざいもく×1','きんののべぼう×1'],
+   cond:'ゆめしまのレアアイテムエリアでランダム入手'},
+
+  // ── 取引・その他 ──
+  {n:'ほしのかけら（取引用）',how:'trade',cat:'べんり',icon:'⭐', mats:['ほしのすな×99'],
+   cond:'ゆめしまで「ほしのすな」を99個集めてクラフト。他プレイヤーのポケモンに渡すと「おみやげ」が貰え、同じポケモンを呼べる'},
+  {n:'絵具（えのぐ）各色',how:'trade',cat:'ざっか', icon:'🎨', mats:['ポケメタル×1','各色の素材×2〜3'],
+   cond:'ドーブル（ペインター）と仲良くなった後にクラフト解放。ショップの日替わりにも登場することがある'},
+  {n:'ポケモンの家（建築キット）各種',how:'trade',cat:'たてもの',icon:'🏠', mats:['ざいもく×4〜10','いわ×2〜6'],
+   cond:'各街のショップ・環境レベル条件付き。一部はフィールドやゆめしまでのみ入手可能'},
+  {n:'あみものキット',    how:'trade',cat:'ざっか', icon:'🧶', mats:['いとくず×3','ポケメタル×1'],
+   cond:'ショップ日替わり枠で購入　「毛糸で編み物」生息地に必要'},
+  {n:'めざましどけい',    how:'trade',cat:'ざっか', icon:'⏰', mats:['ポケメタル×2','ガラス×1'],
+   cond:'ショップ日替わり枠　または キラキラうきしまの街フィールドで入手'},
+  {n:'レジ',              how:'trade',cat:'ざっか', icon:'🛒', mats:['ポケメタル×3','ガラス×1'],
+   cond:'キラキラうきしまの街のショップ　または フィールドで拾う'},
+  {n:'クローゼット各種',  how:'trade',cat:'家具',   icon:'👗', mats:['ざいもく×2〜3','いとくず×1〜2'],
+   cond:'ショップ各街で購入　「お着がえスペース」生息地に必要'},
+  {n:'かがみ（大きなもの）',how:'trade',cat:'家具', icon:'🪞', mats:['ポケメタル×2','ガラス×3'],
+   cond:'ショップ日替わり枠　または キラキラうきしまの街以降で常設販売'},
+  {n:'3Dプリンターアイテム各種',how:'trade',cat:'べんり',icon:'🖨️', mats:['クラフト不要'],
+   cond:'クリア後に解放される3Dプリンターで、特定のアイテムを直接出力できる（クラフト素材不要の特殊入手）'},
+];
+
+// ════════ CRAFT STATE ════════
+let craftHow='all', craftCat2='all';
+
+function renderCraft(){
+  const q = document.getElementById('cs').value.toLowerCase();
+  const g = document.getElementById('craft-grid');
+  g.innerHTML='';
+  let cnt=0;
+  CRAFTS.forEach(c=>{
+    const match =
+      (craftHow==='all'||c.how===craftHow) &&
+      (craftCat2==='all'||c.cat===craftCat2) &&
+      (c.n.toLowerCase().includes(q)||
+       c.mats.join(' ').toLowerCase().includes(q)||
+       c.cond.toLowerCase().includes(q)||
+       c.cat.toLowerCase().includes(q));
+    if(!match) return;
+    cnt++;
+    const matHtml = c.mats.map(m=>`<span class="cc-mat${m.includes('×')&&!m.includes('〜')?' key':''}">${m}</span>`).join('');
+    const howLabel={story:'🎮 ストーリー進行',shop:'🛒 ショップ購入',field:'🗺️ フィールド拾得',zukan:'📖 図鑑登録報酬',yume:'🏝️ ゆめしま',trade:'🔄 取引・その他'};
+    const d=document.createElement('div');
+    d.className=`cc how-${c.how}`;
+    d.innerHTML=`
+      <div class="cc-stripe"></div>
+      <div class="cc-body">
+        <div class="cc-head">
+          <div class="cc-icon">${c.icon}</div>
+          <div>
+            <div class="cc-name">${c.n}</div>
+            <div class="cc-cat-row"><span class="cc-cat">${c.cat}</span></div>
+          </div>
+        </div>
+        <div class="cc-how">${howLabel[c.how]}</div>
+        ${c.mats[0]!=='クラフト不要（入手するだけ）'&&c.mats[0]!=='クラフト不要'?`
+        <div class="cc-mats-title" style="font-size:10px;font-weight:900;color:var(--dim);letter-spacing:.5px;margin-bottom:5px;">🧺 クラフト素材</div>
+        <div class="cc-mats">${matHtml}</div>`:''}
+        <div class="cc-cond"><strong>入手条件：</strong>${c.cond}</div>
+      </div>`;
+    g.appendChild(d);
+  });
+  document.getElementById('ccnt').innerHTML=`<b>${cnt}</b> 件のクラフトレシピ`;
+  if(!cnt) g.innerHTML=`<div style="text-align:center;padding:40px;color:var(--dim);grid-column:1/-1">🔍 「${q}」に一致するレシピが見つかりません</div>`;
+}
+
+function fc(){ renderCraft(); }
+
+function scc(el,how){
+  craftHow=how;
+  document.querySelectorAll('#cchips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  renderCraft();
+}
+
+function sccat(cat,btn){
+  craftCat2=cat;
+  document.querySelectorAll('.csub').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderCraft();
+}
+
+// ════════ TIPS DATA ════════
+// cat: time/move/mat/poke/build/coin/misc
+const TIPS = [
+
+  // ── ⏰ 時間操作 ──
+  {id:'t01', cat:'time', emoji:'⏰', title:'時間操作（時渡り）の基本手順',
+   tags:['time','基本'],
+   desc:'Switch2の本体設定で日時を変更するとゲーム内時間も連動して経過する。建築・料理・作物の待機を全スキップできる万能テクニック。',
+   how:'① ゲーム起動中にHOMEボタン → ② 設定 → 本体 → 日付と時刻 → ③「インターネットで時間をあわせる」をOFF → ④ 日時を変更 → ⑤ ゲームに戻る。日跨ぎした場合は<strong>自宅から再スタート</strong>になる点に注意。',
+   warn:'スタンプカードを過去に戻すと押したスタンプが消える。時間を戻してもアイテムは消えない。'},
+
+  {id:'t02', cat:'time', emoji:'⏩', title:'デイリー2日分を一気に稼ぐ4:55テクニック',
+   tags:['time','coin','デイリー'],
+   desc:'時間を 04:55 に設定してからショップ確認・チャレンジをこなしていると、その間に5:00（日替わりリセット）を自然に跨いで一気に2日分の報酬を得られる。',
+   how:'① Switch2の時刻を <strong>04:55</strong> に設定 → ② ゲーム起動してデイリーチャレンジを達成 → ③ 5:00になると自動更新 → ④ 更新後のチャレンジも達成 → 2日分のコイン獲得。',
+   warn:''},
+
+  {id:'t03', cat:'time', emoji:'🏗️', title:'建築・材木加工の時間を即スキップ',
+   tags:['time','build','mat'],
+   desc:'ポケモンセンターなどの大型建築は完成まで1日待つ必要があるが、時間操作で一瞬で完成させられる。ようこうろでの精錬時間も同様にスキップ可。',
+   how:'建築・精錬を開始した直後に Switch2 の日時を翌日以降に変更 → ゲームに戻るとすでに完成している。',
+   warn:''},
+
+  {id:'t04', cat:'time', emoji:'🌾', title:'作物・野菜を即収穫する農業スキップ',
+   tags:['time','mat'],
+   desc:'コムギ・マメ・ジャガイモなどの野菜は植えてから約1日経過しないと収穫できない。時間操作で即収穫できる。時間を進めても植えた作物が枯れることはない。',
+   how:'種を植えてすぐ Switch2 の日時を1日以上進める → ゲームに戻ると収穫可能状態に。料理を大量生産したい時に特に有効。',
+   warn:''},
+
+  {id:'t05', cat:'time', emoji:'🛒', title:'ショップ日替わりリセット周回',
+   tags:['time','shop'],
+   desc:'ショップのラインナップはAM5:00に更新される。時間操作で何度もリセットして欲しいレシピやアイテムを探せる。',
+   how:'欲しいものが並んでいない → 時計を翌日の05:00以降に変更 → ゲームに戻ってショップを確認 → 出なければ繰り返す。<strong>購入前に変更すること</strong>（変更後は以前の商品が消える）。',
+   warn:''},
+
+  {id:'t06', cat:'time', emoji:'🏝️', title:'ゆめしまを毎日リセットして伝説を厳選',
+   tags:['time','poke'],
+   desc:'ゆめしまは翌日リセットで別の島・別の伝説ポケモン配置になる。時間操作で高速周回して伝説ポケモンを探せる。',
+   how:'① ゆめしまに入って地下を確認 → ② 伝説が出ていなければ街に戻る → ③ Switch2 の日付を1日進める → ④ 再度ゆめしまへ → 繰り返す。環境レベルが高いほど伝説の出現率が上がるとされる。',
+   warn:'ホウオウ・ルギアは鳴き声で発見するタイプのため、時間操作し過ぎると見逃しやすい。'},
+
+  // ── 🚀 移動・探索 ──
+  {id:'m01', cat:'move', emoji:'🚀', title:'でんじふゆう＋かっくうで超遠距離滑空',
+   tags:['move','クリア後'],
+   desc:'「でんじふゆう」で浮いた状態から「かっくう」を開始すると通常より高い高度から滑空を開始できる。移動距離と範囲が大幅に拡大し、クリア後の広大な探索が劇的に快適になる。',
+   how:'① まず「でんじふゆう」を使って浮く → ② 浮いた状態のまますぐ「かっくう」を発動 → ③ 高高度から長距離滑空が始まる。',
+   warn:''},
+
+  {id:'m02', cat:'move', emoji:'🔭', title:'ファストトラベル：テレポート・そらをとぶ活用',
+   tags:['move'],
+   desc:'「そらをとぶ」や「テレポート」が得意なポケモンに話しかけると、そのポケモンのいる場所に一瞬でファストトラベルできる。広い島を縦断する移動コストをゼロにできる。',
+   how:'① ポケモン図鑑でポケモンを選択 → ② ＋ボタンで「さがす」状態に → ③ 周囲のポケモンが案内してくれる → ④ テレポート持ちポケモンに話しかけてワープ。<strong>エリアを跨ぐ移動は不可</strong>。',
+   warn:''},
+
+  {id:'m03', cat:'move', emoji:'🔍', title:'ダウジング＋さがしもの得意ポケモンで光るアイテム即発見',
+   tags:['move','mat'],
+   desc:'ダウジングマシンを持った状態でさがしものが得意なポケモンに話しかけると、光るアイテム（埋もれたアイテム）の場所を効率よく特定できる。時間操作で出現位置もリセット可能。',
+   how:'ダウジングマシン入手後 → さがしものが得意なポケモン（コイキングなど）を仲間に → 話しかけながら探索でアイテム場所が光って表示される。',
+   warn:''},
+
+  {id:'m04', cat:'move', emoji:'📷', title:'ZR長押しでアイテムを前方まとめ回収',
+   tags:['move','mat'],
+   desc:'Yボタン長押し中はメタモンが前方のアイテムを連続吸引して一気に回収できる。大量の素材が落ちている場所での収集時間を大幅に短縮。',
+   how:'アイテムが多く落ちている方向を向いて <strong>Yボタン長押し</strong> → 前方の複数アイテムをまとめて吸い込む。短押しは1個ずつ。',
+   warn:''},
+
+  {id:'m05', cat:'move', emoji:'🔒', title:'ZL押しながら移動で向き固定1マス精密移動',
+   tags:['move','build'],
+   desc:'ZLボタンを押しながら移動するとメタモンの向きが固定され、上下左右に1マスずつ精密に移動できる。ブロックを特定の場所に設置したり、狙った場所にわざを使いたい時に便利。',
+   how:'<strong>ZLボタン</strong>を押しながらスティックで移動 → 向きが固定された状態で1マス単位の精密移動が可能。建築や整地の細かい作業に必須。',
+   warn:''},
+
+  // ── 🪵 素材収集 ──
+  {id:'r01', cat:'mat', emoji:'🤖', title:'ちらかす＋しわける自動素材収集装置',
+   tags:['mat','放置'],
+   desc:'「ちらかす」が得意なポケモンが時間経過で素材を地面に落とし、「しわける」が得意なポケモンがそれを拾って みんなのボックスに自動で入れてくれる。放置で素材を集められる最強の仕組み。',
+   how:'① ちらかす得意ポケモン（ちいさなまるた・てつ・いしを落とすものが特に有用）を生息地で呼ぶ → ② すぐそばにしわける得意ポケモンの生息地を配置 → ③ みんなのボックスを設置して放置。',
+   warn:''},
+
+  {id:'r02', cat:'mat', emoji:'🌲', title:'ストライクにちいさなまるたを渡してざいもく量産',
+   tags:['mat'],
+   desc:'ストライクに「ちいさなまるた」を渡すと「ざいもく」に加工してくれる。手動で渡すと確実に加工でき、大量のざいもくが必要な建築フェーズに重宝。',
+   how:'ストライクと友達になる（木かげの草むら） → 話しかけて「これを見て！」でちいさなまるたを渡す → しばらくするとざいもくに加工して返してくれる。',
+   warn:''},
+
+  {id:'r03', cat:'mat', emoji:'🥕', title:'育てる野菜はマメ・ジャガイモ・コムギの3種だけでOK',
+   tags:['mat','cook'],
+   desc:'料理のハンバーグ（マメ）・スープ（コムギ・マメ）・パン（コムギ）・上位レシピ（ジャガイモ）で使う3種さえ育てれば料理は事足りる。トマトは料理の必須素材にならないので後回しで可。',
+   how:'畑を作ったら <strong>マメ・コムギ・ジャガイモ</strong> の3種のタネを優先購入 → 各複数枚の畑を用意して常時収穫できる体制を作る。',
+   warn:''},
+
+  {id:'r04', cat:'mat', emoji:'📦', title:'クラフト台の隣に収納ボックスを置いて直接クラフト',
+   tags:['mat','build'],
+   desc:'クラフト台の隣に収納ボックス（しゅうのうボックス）を置くと、ボックス内のアイテムをそのままクラフト素材として使える。取り出す手間が省けて大幅な作業効率UP。',
+   how:'クラフト台と収納ボックスを <strong>隣接して設置</strong> → クラフト時にボックス内の素材を自動で参照してくれる。旅に出る時は持ち運び用のクラフト台を1つ所持しておくのもおすすめ。',
+   warn:''},
+
+  {id:'r05', cat:'mat', emoji:'🌟', title:'生息地は再利用可能（複数ポケモン対応）',
+   tags:['mat','poke'],
+   desc:'レアな素材を使った生息地で複数のポケモンが出現する場合、1つの生息地を繰り返し使い回せる。同じ生息地を再建すると時間経過で異なるポケモンが出現する。',
+   how:'生息地で1体目のポケモンと友達になる → 生息地を一旦撤去して同じ場所に再建 → しばらく待つと別のポケモンが現れる → これを繰り返してコンプリート。',
+   warn:'すでに「すみか」になっている生息地には新しいポケモンが出ないため、新しく作るか引っ越しさせる必要がある。'},
+
+  {id:'r06', cat:'mat', emoji:'🔧', title:'クラフト台を1つ持ち歩く習慣',
+   tags:['mat'],
+   desc:'クラフト台がないと現地でアイテムを作れない。街から離れた探索中に急にクラフトが必要になることがあるので、クラフト台を1つ常に所持しておくと詰まらない。',
+   how:'ショップでクラフト台のレシピを購入 → 常にインベントリに1つ入れておく。設置してすぐ使えばその場でクラフト可能。',
+   warn:''},
+
+  // ── 🐾 ポケモン収集 ──
+  {id:'p01', cat:'poke', emoji:'🌙', title:'生息地リセットでレアポケモンを効率厳選',
+   tags:['poke','time'],
+   desc:'出現確率が「めずらしい」以上のポケモンは出現まで時間がかかる。時間操作と生息地リセットを組み合わせると効率的に厳選できる。飛び出すまでの時間が長いのがレアポケモンのサイン。',
+   how:'① レアな生息地を複数作成（5〜10個並行） → ② 時間を進めてポケモンを出現させる → ③ レアが出なければ時間を1〜2時間進める → ④ 繰り返し。',
+   warn:''},
+
+  {id:'p02', cat:'poke', emoji:'🌶️', title:'カビゴンへのからい料理お供えでポケモン出現率UP',
+   tags:['poke','cook'],
+   desc:'ドンヨリうみべの「こけカビゴン」にからい料理を供えると生息地のポケモン出現率が大幅にUP。珍しいポケモンを狙う際は必ず料理を供えてから生息地を周回しよう。',
+   how:'おすすめお供え：<strong>やくぜんスープ</strong>（はっぱ＋マメ＋おいしいみず）・<strong>クルトンサラダ</strong>（はっぱ＋パン）・<strong>アツアツスープパン</strong>。辛味料理が効果大。',
+   warn:''},
+
+  {id:'p03', cat:'poke', emoji:'📖', title:'図鑑の絞り込みでゆめしまの伝説を即チェック',
+   tags:['poke'],
+   desc:'ゆめしまに着いた瞬間にポケモン図鑑を開いて「このエリアにいる」で絞り込むと、伝説ポケモンが出現しているか一瞬でわかる。地下を全部探索する手間を省ける。',
+   how:'① ゆめしまに着く → ② ポケモン図鑑を開く → ③ Yボタンで絞り込み → ④「場所：このエリアにいる」＋「登録状態：全部」 → ⑤ メタモン・フワンテ以外に「？」が表示 → 伝説がいる！',
+   warn:''},
+
+  {id:'p04', cat:'poke', emoji:'📸', title:'3Dプリンターで家具を複製して取引アイテムを増やす',
+   tags:['poke','build'],
+   desc:'クリア後に解放されるポケモンセンターの3Dプリンターで、写真を撮った家具をコピーできる。ポケモンの欲しいものに選ばれやすい「おさら」「ベッド」を量産するのが特に有効。',
+   how:'① ポケモンセンターを完成させる → ② 3Dプリンターで家具の写真を撮影 → ③ 印刷で同じアイテムを量産 → ④ おさら・ベッドなどポケモンが好むアイテムを大量に用意してお願いごとを効率化。',
+   warn:'クリア後限定の機能。'},
+
+  {id:'p05', cat:'poke', emoji:'⭐', title:'ほしのかけらでフレンドのポケモンを呼ぶ',
+   tags:['poke','multi'],
+   desc:'ゆめしまで「ほしのすな」を99個集めると「ほしのかけら」をクラフトできる。他プレイヤーのポケモンに渡すと「おみやげ」が貰え、おみやげを使うことで同じポケモンを自分の街に呼べる。',
+   how:'① ゆめしまでほしのすな×99を集める → ② クラフトでほしのかけらを作成 → ③ マルチプレイ中にフレンドのポケモンに渡す → ④ 貰ったおみやげで図鑑を埋める。',
+   warn:''},
+
+  // ── 🏠 建築・レイアウト ──
+  {id:'b01', cat:'build', emoji:'🔭', title:'建築前にA長押しで完成予想図を確認',
+   tags:['build'],
+   desc:'建築キットを設置する前にAボタンを長押しすると、完成後のイメージを3Dで確認できる。後悔しない建築のための必須テクニック。ただし確認には平地が必要。',
+   how:'建築キットを持った状態で設置したい場所に移動 → <strong>Aボタン長押し</strong> → 完成後の外観がプレビュー表示される。',
+   warn:''},
+
+  {id:'b02', cat:'build', emoji:'✈️', title:'でんじふゆうで空中から建築・ブロック張り替え',
+   tags:['build'],
+   desc:'「でんじふゆう」を覚えると空中移動しながら建築が可能になる。さらに、ブロックを壊さずに上から重ねて張り替えができるため、高所の改築作業が劇的に楽になる。',
+   how:'でんじふゆうを習得後（中盤以降） → 発動して浮いた状態で建築・ブロック設置を行う。高い壁面の作業が地上からはしごなしで可能。',
+   warn:''},
+
+  {id:'b03', cat:'build', emoji:'⚡', title:'電気を地下に通して景観を守る',
+   tags:['build'],
+   desc:'電柱や電線が邪魔で街の景観が崩れる問題を、地下に電線を埋めることで解決できる。「無線送電機」を装飾アイテムとして隠す方法が特に簡単。',
+   how:'方法①（序盤）：地下に電柱を立てて地中に電線を引く。\n方法②（推奨・終盤）：<strong>無線送電機</strong>を1×1マスのインテリアとして隠す → 室内・屋外問わず景観に影響なく電気を通せる。',
+   warn:''},
+
+  {id:'b04', cat:'build', emoji:'🎨', title:'建築キットのAボタンで設計図ごとカスタム建築',
+   tags:['build'],
+   desc:'建築キットはショップで購入できる。自分で一から設計する必要がなく、必要素材を投入してポケモンに作ってもらうだけで高クオリティの家が完成。背景が写っているキットは後から手直し可能。',
+   how:'ポケモンセンターのショップで建築キットを購入 → 設置して素材を投入 → 建築担当のポケモンが自動で組み立て（1日かかる場合は時間操作でスキップ可）。',
+   warn:'背景が写っていない特殊素材キットは後から壊せないため、場所と向きを慎重に決めること。'},
+
+  {id:'b05', cat:'build', emoji:'📐', title:'生息地は5〜10個並行して作成が効率的',
+   tags:['build','poke'],
+   desc:'ポケモンは生息地を作ってもすぐには現れないため、未発見のポケモンの生息地を可能な限り同時に複数作っておくと、後で周回するだけで次々と図鑑が埋まる。',
+   how:'生息地図鑑でまだ仲良くなっていないポケモンの生息地を確認 → 素材が揃っているものから優先して <strong>5〜10個</strong> 同時に作成 → 時間をおいて周回するだけで効率的に友達が増える。',
+   warn:''},
+
+  // ── 💰 金策・コイン ──
+  {id:'c01', cat:'coin', emoji:'💰', title:'日替わりチャレンジが最も効率的なコイン稼ぎ',
+   tags:['coin'],
+   desc:'現状ゲーム内のコイン（ライフコイン）を稼ぐ主な手段はチャレンジのみ。特に日替わりチャレンジは通常より高額なため、毎日必ずクリアしておくことが金策の基本。',
+   how:'ポケモンセンター前のパソコンを毎日確認 → 「日がわりチャレンジ」を優先クリア → コインを受け取る。環境レベルを上げると新しいチャレンジが追加されてコインも増える。',
+   warn:''},
+
+  {id:'c02', cat:'coin', emoji:'🎰', title:'スタンプカードは金曜日に更新・伝説スタンプが高額',
+   tags:['coin'],
+   desc:'パソコンのスタンプカードは毎日1回押せ、翌週金曜日に枚数と種類に応じてコインをもらえる。伝説ポケモンのスタンプを押すと特に高額な報酬になる。6日以降は高額スタンプに押し直しも可能。',
+   how:'① 毎日ポケモンセンターのパソコンでスタンプを押す（フレンドの島でも押せる） → ② 伝説ポケモンのスタンプが出たらすぐ押す → ③ 金曜日に報酬を受け取る。スタンプは5日以上押すと増える。',
+   warn:'時間操作でスタンプカードより前に戻すと押したスタンプが消える。'},
+
+  {id:'c03', cat:'coin', emoji:'🔄', title:'ショップデーを活用して購入効率UP',
+   tags:['coin','shop'],
+   desc:'曜日によってショップデーなどの特別イベントが発生し、アイテムやレシピが通常より有利な条件で手に入る。目的に合わせて時間操作で曜日を調整することも可能。',
+   how:'ゲーム内の曜日は Switch2 の曜日と連動 → 時間操作で特定の曜日に変更してショップデーを活用 → 欲しいレシピやアイテムがあれば購入前に日付操作。',
+   warn:''},
+
+  // ── ✨ その他・知って得する小技 ──
+  {id:'x01', cat:'misc', emoji:'💡', title:'収納ボックスを中身ごと移動できない点に注意',
+   tags:['misc','warn'],
+   desc:'収納ボックスは中身を入れたまま移動できない。引っ越しの際は全て取り出してから移動し、新しい場所で入れ直す必要がある。最初から他の建築の邪魔にならない場所に設置しよう。',
+   how:'最初の収納エリアは <strong>自宅やポケモンセンターの近く</strong> に作るのがおすすめ。後から増やすなら隣に追加するだけでOK。',
+   warn:'一度設置した場所の変更が大変なため、序盤のうちに場所を決めておくことを強く推奨。'},
+
+  {id:'x02', cat:'misc', emoji:'🎯', title:'ポケモンの「すみごこち」は1日1回だけ確認可能',
+   tags:['misc'],
+   desc:'仲間ポケモンに「すみごこちどう？」と聞くと、その街での居心地を教えてくれる。1日1回のみの仕様。居心地が良いほどちらかすで落とす素材が増えるなど、街の発展に影響する。',
+   how:'仲間ポケモンに話しかけて「すみごこちどう？」を選択 → 居心地スコアが表示 → 改善のヒントをもとに生息地や家具を整えていく。',
+   warn:''},
+
+  {id:'x03', cat:'misc', emoji:'🧺', title:'おさら・ベッドを多めに持ち歩くとポケモンが喜ぶ',
+   tags:['misc','poke'],
+   desc:'ポケモンが欲しいもの（ウォンツ）に「おさら（きのみ付き）」や「ベッド」が選ばれやすい。これらを複数持ち歩いておくとその場でプレゼントできてすみごこちが上がる。',
+   how:'バッグに <strong>おさら（各種きのみを添えたもの）×2〜3</strong> と <strong>ベッド×1〜2</strong> を常に入れておく。素材系はしゅうのうボックスに入れてバッグを軽くしつつ、ポケモン対応アイテムだけ手元に置く。',
+   warn:''},
+
+  {id:'x04', cat:'misc', emoji:'🔑', title:'キラキラを必ず調べて生息地ヒントを収集',
+   tags:['misc','poke'],
+   desc:'マップ上に落ちているキラキラ（光るオブジェ）を調べると、そのエリアのポケモンの「生息地ヒント」が図鑑に登録される。生息地情報を事前に入手していると計画的に生息地が作れる。',
+   how:'探索中にキラキラを見かけたら必ず調べる。生息地ヒントは図鑑に登録されるので、後から「まだ仲良くなっていないポケモン」の生息地を一括で確認できる。',
+   warn:''},
+
+  {id:'x05', cat:'misc', emoji:'🌄', title:'4つの時間帯で出現ポケモンが変わる',
+   tags:['misc','poke','time'],
+   desc:'ぽこポケには朝・昼・夕・夜の4つの時間帯があり、出現するポケモンが時間帯によって異なる。夜限定のポケモンなども存在するため、時間帯を管理して効率よく図鑑を埋めよう。',
+   how:'生息地図鑑で各ポケモンの出現時間帯を確認 → 時間操作で目当ての時間帯に変更 → 該当する生息地を周回。例：ホーホーは夜に出やすい。',
+   warn:''},
+
+  {id:'x06', cat:'misc', emoji:'🤝', title:'フレンドの島でスタンプ・素材を稼ぐ',
+   tags:['misc','multi'],
+   desc:'マルチプレイで他のプレイヤーの島（クラウド島）を訪問すると、そちらのポケモンセンターでもスタンプが押せる。また、ゆめしまの素材を持ち帰ることができ、素材のバリエーションも増える。',
+   how:'フレンドとおすそわけ通信（マルチプレイ）でクラウド島を訪問 → ポケモンセンターのパソコンでスタンプ → 素材を集めて持ち帰る。「ほしのかけら」交換もここで。',
+   warn:'自分の島でスタンプを押した場合、フレンドの島では押せない（逆も然り）。'},
+];
+
+// ════════ TIPS STATE ════════
+let tipsCat = 'all';
+
+function renderTips(){
+  const q = document.getElementById('ts').value.toLowerCase();
+  const g = document.getElementById('tips-grid');
+  g.innerHTML='';
+  let cnt=0;
+  TIPS.forEach(t=>{
+    const match =
+      (tipsCat==='all'||t.cat===tipsCat) &&
+      (t.title.toLowerCase().includes(q)||
+       t.desc.toLowerCase().includes(q)||
+       t.how.toLowerCase().includes(q)||
+       t.tags.join(' ').toLowerCase().includes(q));
+    if(!match) return;
+    cnt++;
+    const tagMap={
+      time:'ttag-time',move:'ttag-move',mat:'ttag-mat',
+      poke:'ttag-poke',build:'ttag-build',coin:'ttag-coin',misc:'ttag-misc',
+      warn:'ttag-warn',multi:'ttag-misc',cook:'ttag-mat',shop:'ttag-coin',
+      'クリア後':'ttag-warn','デイリー':'ttag-coin','放置':'ttag-mat'
+    };
+    const tagLabel={
+      time:'⏰時間操作',move:'🚀移動',mat:'🪵素材',poke:'🐾ポケモン',
+      build:'🏠建築',coin:'💰金策',misc:'✨その他',warn:'⚠️注意',
+      multi:'🤝マルチ',cook:'🍳料理',shop:'🛒ショップ',
+      'クリア後':'🏁クリア後','デイリー':'📅デイリー','放置':'🔄放置'
+    };
+    const tagsHtml = [...new Set(t.tags)].map(tag=>
+      `<span class="ttag ${tagMap[tag]||'ttag-misc'}">${tagLabel[tag]||tag}</span>`
+    ).join('');
+    const warnHtml = t.warn ? `<div class="tip-warn">⚠️ ${t.warn}</div>` : '';
+    const d=document.createElement('div');
+    d.className='tip-card';
+    d.innerHTML=`
+      <div class="tip-head">
+        <div class="tip-emoji">${t.emoji}</div>
+        <div class="tip-meta">
+          <div class="tip-title">${t.title}</div>
+          <div class="tip-tags">${tagsHtml}</div>
+        </div>
+      </div>
+      <div class="tip-body">
+        <div class="tip-desc">${t.desc}</div>
+        <div class="tip-how${t.warn?' warn':''}"><strong>やり方：</strong>${t.how.replace(/\n/g,'<br>')}</div>
+        ${warnHtml}
+      </div>`;
+    g.appendChild(d);
+  });
+  document.getElementById('tcnt').innerHTML=`<b>${cnt}</b> 件のテクニック`;
+  if(!cnt) g.innerHTML=`<div style="text-align:center;padding:40px;color:var(--dim);grid-column:1/-1">🔍 「${q}」に一致するテクニックが見つかりません</div>`;
+}
+
+function ft(){ renderTips(); }
+
+function stcat(el,cat){
+  tipsCat=cat;
+  document.querySelectorAll('.tcat').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  renderTips();
+}
+
+// ════════ INIT ════════
+renderSpotlight();
+renderHab();
+renderRec();
+renderCraft();
+renderTips();
+
+// ボトムナビ（スマホ用）
+function swMobile(id, btn){
+  // タブ切替
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.bn-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pane-'+id).classList.add('on');
+  btn.classList.add('on');
+  // PCタブも同期
+  document.querySelectorAll('.tab').forEach(t=>{
+    if(t.getAttribute('onclick')&&t.getAttribute('onclick').includes("'"+id+"'")){
+      t.classList.add('on');
+    }
+  });
+  // 上部へスクロール
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+<!-- ボトムナビ（スマホ専用） -->
+<nav class="bottom-nav">
+  <button class="bn-btn on" data-pane="hab" onclick="swMobile('hab',this)">
+    <span class="bn-icon">🏘️</span>生息地
+  </button>
+  <button class="bn-btn" data-pane="rec" onclick="swMobile('rec',this)">
+    <span class="bn-icon">🍳</span>料理
+  </button>
+  <button class="bn-btn" data-pane="craft" onclick="swMobile('craft',this)">
+    <span class="bn-icon">🔨</span>クラフト
+  </button>
+  <button class="bn-btn" data-pane="tips" onclick="swMobile('tips',this)">
+    <span class="bn-icon">💡</span>裏技
+  </button>
+</nav>
+
+</body>
+</html>
